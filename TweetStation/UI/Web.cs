@@ -47,20 +47,20 @@ namespace TweetStation
 			toolbar = new UIToolbar ();
 			topBar = new UIToolbar ();
 			
-			title = new UILabel (new RectangleF (10, 0, 80, 30)){
+			title = new UILabel (new CGRect (10, 0, 80, 30)){
 				BackgroundColor = UIColor.Clear,
 				AdjustsFontSizeToFitWidth = true,
 				Font = UIFont.BoldSystemFontOfSize (22),
 				MinimumFontSize = 14,
 				TextColor = UIColor.White,
 				ShadowColor = UIColor.FromRGB (64, 74, 87),
-				ShadowOffset = new SizeF (0, -1)
+				ShadowOffset = new CGSize (0, -1)
 			};
 			
 			topBar.Items = new UIBarButtonItem []  {
 				new UIBarButtonItem (title),
 				flexibleSpace,
-				new UIBarButtonItem (Locale.GetText ("Close"), UIBarButtonItemStyle.Bordered, (o, e) => { DismissModalViewControllerAnimated (true);} )
+				new UIBarButtonItem (Locale.GetText ("Close"), UIBarButtonItemStyle.Bordered, (o, e) => { DismissViewController (true, () => { });} )
 			};
 			
 			backButton = new UIBarButtonItem (UIImage.FromBundle ("Images/back.png"), UIBarButtonItemStyle.Plain, (o, e) => { WebView.GoBack (); });
@@ -137,11 +137,11 @@ namespace TweetStation
 			var sbounds = View.Bounds;
 			int top = (InterfaceOrientation == UIInterfaceOrientation.Portrait) ? 0 : -44;
 			
-			topBar.Frame = new RectangleF (0, top, sbounds.Width, 44);
-			toolbar.Frame =  new RectangleF (0, sbounds.Height-44, sbounds.Width, 44);
-			WebView.Frame = new RectangleF (0, top+44, sbounds.Width, sbounds.Height-88-top);
+			topBar.Frame = new CGRect (0, top, sbounds.Width, 44);
+			toolbar.Frame =  new CGRect (0, sbounds.Height-44, sbounds.Width, 44);
+			WebView.Frame = new CGRect (0, top+44, sbounds.Width, sbounds.Height-88-top);
 			
-			title.Frame = new RectangleF (10, 0, sbounds.Width-80, 38);
+			title.Frame = new CGRect (10, 0, sbounds.Width-80, 38);
 		}
 		
 		public override void ViewWillAppear (bool animated)

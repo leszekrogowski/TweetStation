@@ -1,4 +1,4 @@
-﻿﻿// Composer.cs:
+﻿// Composer.cs:
 //    Views and ViewControllers for composing messages
 //
 // Copyright 2010 Miguel de Icaza
@@ -56,19 +56,19 @@ namespace TweetStation
 			};
 			
 			// Work around an Apple bug in the UITextView that crashes
-			if (MonoTouch.ObjCRuntime.Runtime.Arch == MonoTouch.ObjCRuntime.Arch.SIMULATOR)
+			if (ObjCRuntime.Runtime.Arch == ObjCRuntime.Arch.SIMULATOR)
 				textView.AutocorrectionType = UITextAutocorrectionType.No;
 			
 			textView.Changed += HandleTextViewChanged;
 
-			charsLeft = new UILabel (RectangleF.Empty) { 
+			charsLeft = new UILabel (CGRect.Empty) { 
 				Text = "140", 
 				TextColor = UIColor.White,
 				BackgroundColor = UIColor.Clear,
 				TextAlignment = UITextAlignment.Right
 			};
 
-			toolbar = new UIToolbar (RectangleF.Empty);
+			toolbar = new UIToolbar (CGRect.Empty);
 			GpsButtonItem = new UIBarButtonItem (UIImage.FromBundle ("Images/gps.png"), style, InsertGeo);
 			ShrinkItem = new UIBarButtonItem (UIImage.FromBundle ("Images/arrows.png"), style, OnShrinkTapped);
 			
@@ -218,7 +218,7 @@ namespace TweetStation
 		Composer () : base (null, null)
 		{
 			// Navigation Bar
-			navigationBar = new UINavigationBar (new RectangleF (0, 0, 320, 44));
+			navigationBar = new UINavigationBar (new CGRect (0, 0, 320, 44));
 			navItem = new UINavigationItem ("");
 			var close = new UIBarButtonItem (Locale.GetText ("Close"), UIBarButtonItemStyle.Plain, CloseComposer);
 			navItem.LeftBarButtonItem = close;
@@ -228,7 +228,7 @@ namespace TweetStation
 			navigationBar.PushNavigationItem (navItem, false);
 			
 			// Composer
-			composerView = new ComposerView (ComputeComposerSize (RectangleF.Empty), this, CameraTapped);
+			composerView = new ComposerView (ComputeComposerSize (CGRect.Empty), this, CameraTapped);
 			composerView.LookupUserRequested += delegate {
 				PresentModalViewController (new UserSelector (userName => {
 					composerView.Text += ("@" + userName + " ");
@@ -236,7 +236,7 @@ namespace TweetStation
 			};
 			
 			// Add the views
-			NSNotificationCenter.DefaultCenter.AddObserver ("UIKeyboardWillShowNotification", KeyboardWillShow);
+			UIKeyboard.Notifications.ObserveWillShow(KeyboardWillShow);
 
 			View.AddSubview (composerView);
 			View.AddSubview (navigationBar);
@@ -306,7 +306,7 @@ namespace TweetStation
 		
 		void PictureSelected (NSDictionary pictureDict)
 		{
-			int level = Util.Defaults.IntForKey ("sizeCompression");
+			nint level = Util.Defaults.IntForKey ("sizeCompression");
 			
 			if ((pictureDict [UIImagePickerController.MediaType] as NSString) == "public.image"){
 				Picture = pictureDict [UIImagePickerController.EditedImage] as UIImage;
@@ -321,7 +321,7 @@ namespace TweetStation
 				}
 				
 				var size = Picture.Size;
-				float maxWidth;
+				nfloat maxWidth;
 				switch (level){
 				case 0:
 					maxWidth = 640;
@@ -341,7 +341,7 @@ namespace TweetStation
 				// Show the UI, and on a callback, do the scaling, so the user gets an animation
 				NSTimer.CreateScheduledTimer (TimeSpan.FromSeconds (0), delegate {
 					if (size.Width > maxWidth || size.Height > maxWidth)
-						Picture = Scale (Picture, new SizeF (maxWidth, maxWidth*size.Height/size.Width));
+						Picture = Scale (Picture, new CGSize (maxWidth, maxWidth*size.Height/size.Width));
 					hud.StopAnimating ();
 					hud.RemoveFromSuperview ();
 					hud = null;
@@ -407,7 +407,7 @@ namespace TweetStation
 			
 			var jpeg = Picture.AsJPEG ();
 			Stream stream;
-			unsafe { stream = new UnmanagedMemoryStream ((byte*) jpeg.Bytes, jpeg.Length); }
+			unsafe { stream = new UnmanagedMemoryStream ((byte*) jpeg.Bytes, (long)jpeg.Length); }
 			
 			progressHud = new ProgressHud (Locale.GetText ("Uploading Image"), Locale.GetText ("Stop"));
 			var uploader = TwitterAccount.CurrentAccount.UploadPicture (stream, PicUploadComplete, progressHud);
@@ -482,9 +482,9 @@ namespace TweetStation
 			CloseComposer (this, EventArgs.Empty);
 		}
 		
-		void KeyboardWillShow (NSNotification notification)
+		void KeyboardWillShow (object sender, UIKeyboardEventArgs e)
 		{
-			var kbdBounds = (notification.UserInfo.ObjectForKey (UIKeyboard.BoundsUserInfoKey) as NSValue).RectangleFValue;
+			var kbdBounds = (e.Notification.UserInfo.ObjectForKey (UIKeyboard.BoundsUserInfoKey) as NSValue).CGRectValue;
 			
 			composerView.Frame = ComputeComposerSize (kbdBounds);
 		}

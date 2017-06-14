@@ -110,8 +110,8 @@ namespace TweetStation {
 			if (_hidden) return;
 	
 			int width, rWidth, rHeight, x;
-			SizeF titleSize = calculateHeightOfTextForWidth(_title, titleFont, 200, UILineBreakMode.TailTruncation);
-			SizeF messageSize = calculateHeightOfTextForWidth(_message, messageFont, 200, UILineBreakMode.WordWrap);
+			CGSize titleSize = calculateHeightOfTextForWidth(_title, titleFont, 200, UILineBreakMode.TailTruncation);
+			CGSize messageSize = calculateHeightOfTextForWidth(_message, messageFont, 200, UILineBreakMode.WordWrap);
 	
 			if (_title.Length<1) titleSize.Height = 0;
 			if (_message==null || _message.Length<1) messageSize.Height = 0;
@@ -122,29 +122,29 @@ namespace TweetStation {
 			rWidth += WIDTH_MARGIN * 2;
 			x = (320-rWidth) /2;
 	
-			_activity.Center = new PointF(320/2, HEIGHT_MARGIN + 120 + _activity.Frame.Size.Height/2);
+			_activity.Center = new CGPoint(320/2, HEIGHT_MARGIN + 120 + _activity.Frame.Size.Height/2);
 	
 			// Rounded rectangle
-			RectangleF areaRect = new RectangleF(x, 100 + HEIGHT_MARGIN, rWidth, rHeight);
+			CGRect areaRect = new CGRect(x, 100 + HEIGHT_MARGIN, rWidth, rHeight);
 			this.DrawRoundRectangle(areaRect, 8, UIColor.FromRGBA(0.0f, 0.0f, 0.0f, 0.75f)); // alpha = 0.75
 			
 			// Title
 			UIColor.White.SetColor();
-			var textRect = new RectangleF(x+WIDTH_MARGIN, 95 + _activity.Frame.Size.Height + 25 + HEIGHT_MARGIN,
+			var textRect = new CGRect(x+WIDTH_MARGIN, 95 + _activity.Frame.Size.Height + 25 + HEIGHT_MARGIN,
 				width, titleSize.Height);
-			 SizeF titleDrawSize = this.DrawString(_title, textRect, titleFont, UILineBreakMode.TailTruncation, UITextAlignment.Center);
+			 CGSize titleDrawSize = _title.DrawString(textRect, titleFont, UILineBreakMode.TailTruncation, UITextAlignment.Center);
 	
 			// Description
 			UIColor.White.SetColor();
 			textRect.Y += titleDrawSize.Height+10;
-			textRect = new CGRect(textRect.Location, new SizeF(textRect.Size.Width, messageSize.Height));
+			textRect = new CGRect(textRect.Location, new CGSize(textRect.Size.Width, messageSize.Height));
 			
 			if (_message!=null)
-				this.DrawString(_message, textRect, messageFont, UILineBreakMode.WordWrap, UITextAlignment.Center);
+				_message.DrawString(textRect, messageFont, UILineBreakMode.WordWrap, UITextAlignment.Center);
 		}
 	
 		protected CGSize calculateHeightOfTextForWidth(string text, UIFont font, float width, UILineBreakMode lineBreakMode){
-			return text==null? new CGSize(0, 0) : this.StringSize(text, font, new SizeF(width, 300), lineBreakMode);
+			return text==null? new CGSize(0, 0) : UIStringDrawing.StringSize(text, font, new CGSize(width, 300), lineBreakMode);
 		}
 	}
 	

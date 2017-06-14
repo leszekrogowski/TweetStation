@@ -184,15 +184,16 @@ namespace TweetStation
 		public override void Selected (NSIndexPath indexPath)
 		{
 			var text = GetItemText (indexPath);
-			DismissModalViewControllerAnimated (false);
-			
-			userSelected (text);
+			DismissViewController (false, () =>
+			{
+                userSelected (text);
+			});
 		}
 		
 		public override void FinishSearch ()
 		{
 			base.FinishSearch ();
-			DismissModalViewControllerAnimated (true);
+			DismissViewController (true, () => { });
 		}
 	}
 	
@@ -202,7 +203,7 @@ namespace TweetStation
 		
 		public override void PopulateSearch (Section entries)
 		{
-			int n = Util.Defaults.IntForKey ("searches");
+			int n = (int)Util.Defaults.IntForKey ("searches");
 
 			terms = (from idx in Enumerable.Range (0, n)
 			              let value = Util.Defaults.StringForKey ("u-" + idx)

@@ -158,7 +158,7 @@ namespace TweetStation
 		// The cell where the menu is shown
 		UITableViewCell menuCell;
 	
-		static void Move (UIView view, float xoffset)
+		static void Move (UIView view, nfloat xoffset)
 		{
 			var frame = view.Frame;
 			frame.Offset (xoffset, 0);
@@ -173,7 +173,7 @@ namespace TweetStation
 			if (ip != null)
 				TableView.DeselectRow (ip, false);
 			
-			float offset = cell.ContentView.Frame.Width;
+			nfloat offset = cell.ContentView.Frame.Width;
 
 			currentMenuView = menuView;
 			menuCell = cell;
@@ -195,7 +195,7 @@ namespace TweetStation
 			});
 		}
 
-		void MoveCellViews (UITableViewCell cell, UIView menuView, float offset)
+		void MoveCellViews (UITableViewCell cell, UIView menuView, nfloat offset)
 		{
 			Move (cell.SelectedBackgroundView, offset);
 			foreach (var view in cell.ContentView.Subviews){
@@ -243,7 +243,7 @@ namespace TweetStation
 		void AnimateBack (UIView view, CAAnimation animation)
 		{
 			var b = view.Bounds;
-			view.Layer.Position = new PointF (b.Width/2, b.Height/2);
+			view.Layer.Position = new CGPoint (b.Width/2, b.Height/2);
 			view.Layer.AddAnimation (animation, "position");
 		}
 		
@@ -252,14 +252,14 @@ namespace TweetStation
 			if (menuCell == null)
 				return false;
 			
-			float offset = menuCell.ContentView.Frame.Width;
+			nfloat offset = menuCell.ContentView.Frame.Width;
 			
 
 			UIView.BeginAnimations ("Foo");
 			UIView.SetAnimationDuration (hideDelay);
 			UIView.SetAnimationCurve (UIViewAnimationCurve.EaseInOut);			
 
-			var animation = MakeBounceAnimation (Math.Abs (offset), "position.x");
+			var animation = MakeBounceAnimation ((float)Math.Abs (offset), "position.x");
 			
 			foreach (var view in menuCell.ContentView.Subviews){
 				if (view == currentMenuView)
@@ -347,7 +347,7 @@ namespace TweetStation
 
 				layers = new CALayer [images.Length];
 				
-				float slotsize = frame.Width/layers.Length;
+				nfloat slotsize = frame.Width/layers.Length;
 				double delay = globalDelay; 
 				for (int i = 0; i < layers.Length; i++){
 					var image = images [i];
@@ -396,7 +396,7 @@ namespace TweetStation
 					
 					layer.AddAnimation (group, "showup");					
 					
-					layer.Frame = new RectangleF (
+					layer.Frame = new CGRect (
 						(int) (slotsize*i+image.Size.Width/2), 
 						(int) (frame.Height-image.Size.Height)/2, 
 						image.Size.Width, image.Size.Height);
@@ -420,17 +420,17 @@ namespace TweetStation
 			
 			UIImage RenderImageWithShadow (UIImage image, float radius, UIColor color)
 			{
-				var size = new SizeF (image.Size.Width+8, image.Size.Height+8);
+				var size = new CGSize (image.Size.Width+8, image.Size.Height+8);
 				
 				BeginImageContext (size);
 				var ctx = UIGraphics.GetCurrentContext ();
 
 				ctx.SaveState ();
-				ctx.SetShadowWithColor (new SizeF (1, 1), radius, color.CGColor);
-				image.Draw (new PointF (4, 4));
+				ctx.SetShadow (new CGSize (1, 1), radius, color.CGColor);
+				image.Draw (new CGPoint (4, 4));
 				ctx.RestoreState ();
 
-				image.Draw (new PointF (4, 4));
+				image.Draw (new CGPoint (4, 4));
 				
 				image = UIGraphics.GetImageFromCurrentImageContext ();
 
@@ -457,7 +457,7 @@ namespace TweetStation
 			{
 				if (cover == null){
 					cover = new CALayer () {
-						Frame = new RectangleF (new PointF (0, 0), layers [selected].Frame.Size),
+						Frame = new CGRect (new CGPoint (0, 0), layers [selected].Frame.Size),
 					};
 					cover.Contents = RenderImageWithShadow (images [selected], 4, UIColor.White).CGImage;
 				}

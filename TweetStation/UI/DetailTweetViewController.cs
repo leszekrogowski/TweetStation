@@ -244,7 +244,7 @@ namespace TweetStation
 		const int smallSize = 12;
 		
 		// If there is a picture, this contains the Y offset of the picture start
-		float borderAt;
+		nfloat borderAt;
 		TweetView tweetView;
 		UIButton buttonView;
 		UIImage image;
@@ -267,7 +267,7 @@ namespace TweetStation
 			var picUrl = PicDetect.FindPicUrl (tweet.Text, out thumbUrl, out previewUrl);
 			if (picUrl != null){
 				borderAt = y;
-				SetupImagePreview (parent, y, picUrl, thumbUrl, previewUrl);
+				SetupImagePreview (parent, (float)y, picUrl, thumbUrl, previewUrl);
 				y += 90;
 			} 
 			
@@ -289,7 +289,7 @@ namespace TweetStation
 			if (tweet.Kind != TweetKind.Direct){
 				// Now that we now our size, center the button
 				buttonView = UIButton.FromType (UIButtonType.Custom);
-				buttonView.Frame = new RectangleF (tweetRect.X + tweetRect.Width, (f.Height-38)/2-4, 38, 38);
+				buttonView.Frame = new CGRect (tweetRect.X + tweetRect.Width, (f.Height-38)/2-4, 38, 38);
 				UpdateButtonImage (tweet.Favorited);
 
 				buttonView.TouchDown += delegate {
@@ -303,7 +303,7 @@ namespace TweetStation
 		
 		void SetupImagePreview (DialogViewController parent, float y, string picUrl, string thumbUrl, string previewUrl)
 		{
-			var rect = new RectangleF (0, y, 78, 78);
+			var rect = new CGRect (0, y, 78, 78);
 			
 			var imageButton = new UIButton (rect) {
 				BackgroundColor = UIColor.Clear
@@ -329,14 +329,14 @@ namespace TweetStation
 
 			context.SetLineWidth (1);
 			// Device and Sim interpret the Y for the shadow differently.
-			context.SetShadowWithColor (new SizeF (0, -1), 3, UIColor.DarkGray.CGColor);
+			context.SetShadow (new CGSize (0, -1), 3, UIColor.DarkGray.CGColor);
 			context.StrokePath ();
 			
 			// Clip the image to the path and paint it
 			if (image != null){
 				context.AddPath (borderPath);
 				context.Clip ();
-				image.Draw (new RectangleF (0, 0, 78, 78));
+				image.Draw (new CGRect (0, 0, 78, 78));
             }
 			context.RestoreState ();
 		}

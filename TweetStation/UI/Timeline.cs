@@ -398,7 +398,7 @@ namespace TweetStation {
 		
 		void UpdateUserInfo ()
 		{
-			var profileRect = new RectangleF (PadX, 0, View.Bounds.Width-30-PadX*2, 100);
+			var profileRect = new CGRect (PadX, 0, View.Bounds.Width-30-PadX*2, 100);
 			shortProfileView = new ShortProfileView (profileRect, ReferenceUser.Id, true);
 			shortProfileView.PictureTapped += delegate { PictureViewer.Load (this, ReferenceUser.Id); };
 			shortProfileView.UrlTapped += delegate { WebViewController.OpenUrl (this, ReferenceUser.Url); };

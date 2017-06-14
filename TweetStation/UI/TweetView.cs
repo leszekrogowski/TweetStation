@@ -31,7 +31,7 @@ namespace TweetStation
 	///   and urls
 	/// </summary>
 	public class TweetView : UIView {
-		public float Height { get; private set; }
+		public nfloat Height { get; private set; }
 
 		// Tapped events
 		public delegate void TappedEvent (string value);
@@ -51,7 +51,7 @@ namespace TweetStation
 		public TweetView (CGRect frame, string text, TappedEvent tapped, TappedEvent tapAndHold) : base (frame)
 		{
 			blocks = new List<Block> ();
-			lastRect = RectangleF.Empty;
+			lastRect = CGRect.Empty;
 
 			this.text = text;
 			Height = Layout ();
@@ -72,9 +72,9 @@ namespace TweetStation
 		
 		//const int spaceLen = 4;
 		const int lineHeight = fontHeight + 4;
-		float Layout ()
+		nfloat Layout ()
 		{
-			float max = Bounds.Width, segmentLength, lastx = 0, x = 0, y = 0;
+			nfloat max = Bounds.Width, segmentLength, lastx = 0, x = 0, y = 0;
 			int p = 0;
 			UIFont font = regular, lastFont = null;
 			string line = "";
@@ -102,14 +102,14 @@ namespace TweetStation
 				else
 					font = regular;
 				
-				segmentLength = StringSize (segment, font).Width;
+				segmentLength = UIStringDrawing.StringSize (segment, font).Width;
 			
 				// If we would overflow the line.
 				if (x + segmentLength >= max){
 					// Push the text we have so far, go to next line
 					if (line != ""){
 						blocks.Add (new Block () {
-							Bounds = new RectangleF (lastx, y, x-lastx, lineHeight),
+							Bounds = new CGRect (lastx, y, x-lastx, lineHeight),
 							Value = line,
 							Font = lastFont ?? font,
 						});
@@ -120,9 +120,9 @@ namespace TweetStation
 					
 					// Too long to fit even on its own line, stick it on its own line.
 					if (segmentLength >= max){
-						var dim = StringSize (segment, font, new SizeF (max, float.MaxValue), UILineBreakMode.WordWrap);
+						var dim = UIStringDrawing.StringSize (segment, font, new CGSize (max, float.MaxValue), UILineBreakMode.WordWrap);
 						blocks.Add (new Block () {
-							Bounds = new RectangleF (new PointF (0, y), dim),
+							Bounds = new CGRect (new CGPoint (0, y), dim),
 							Value = segment,
 							Font = lastFont ?? font
 						});
@@ -140,7 +140,7 @@ namespace TweetStation
 					// is bold (so we can make a tappable element on its own).
 					if (x != 0 && (font != lastFont || font == bold)){
 						blocks.Add (new Block () {
-							Bounds = new RectangleF (lastx, y, x-lastx, lineHeight),
+							Bounds = new CGRect (lastx, y, x-lastx, lineHeight),
 							Value = line,
 							Font = lastFont
 						});
@@ -163,7 +163,7 @@ namespace TweetStation
 				return y;
 			
 			blocks.Add (new Block () {
-				Bounds = new RectangleF (lastx, y, x-lastx, lineHeight),
+				Bounds = new CGRect (lastx, y, x-lastx, lineHeight),
 				Value = line,
 				Font = font
 			});
@@ -185,22 +185,22 @@ namespace TweetStation
 				var font = block.Font;
 				if (font != last){
 					if (font == bold)
-						context.SetRGBFillColor (0.1f, 0.5f, 0.87f, 1);
+						context.SetFillColor (0.1f, 0.5f, 0.87f, 1);
 					else
-						context.SetRGBFillColor (0, 0, 0, 1);
+						context.SetFillColor (0, 0, 0, 1);
 					last = font;
 				}
 
 				// selected?
 				if (block == highlighted && block.Font == bold){
 					context.FillRect (block.Bounds);
-					context.SetRGBFillColor (1, 1, 1, 1);
+					context.SetFillColor (1, 1, 1, 1);
 					last = null;
 				}
 
 				// We need to use the full overload because the short overload does not
 				// render Unicode character beyond a simple range.   Amazing, but true
-				DrawString (block.Value, block.Bounds, block.Font, UILineBreakMode.Clip, UITextAlignment.Left);
+				block.Value.DrawString (block.Bounds, block.Font, UILineBreakMode.Clip, UITextAlignment.Left);
 				
 				//context.SetRGBStrokeColor (1, 0, 1, 1);
 				//context.StrokeRect (block.Bounds);

@@ -61,7 +61,7 @@ namespace TweetStation
 			BackgroundColor = UIColor.Clear;
 
 			// Pics are 73x73, but we will add a border.
-			profilePic = new UIImageView (new RectangleF (10, 10, 73, 73));
+			profilePic = new UIImageView (new CGRect (10, 10, 73, 73));
 			profilePic.BackgroundColor = UIColor.Clear;
 			AddSubview (profilePic);
 			
@@ -70,17 +70,17 @@ namespace TweetStation
 			url.Font = urlFont;
 			url.LineBreakMode = UILineBreakMode.TailTruncation;
 			url.HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
-			url.TitleShadowOffset = new SizeF (0, 1);
+			url.TitleShadowOffset = new CGSize (0, 1);
 			url.SetTitleColor (UIColor.FromRGB (0x32, 0x4f, 0x85), UIControlState.Normal);
 			url.SetTitleColor (UIColor.Red, UIControlState.Highlighted);
 			url.SetTitleShadowColor (UIColor.White, UIControlState.Normal);
-			url.Frame = new RectangleF (TextX, 70, rect.Width-TextX, urlSize);
+			url.Frame = new CGRect (TextX, 70, rect.Width-TextX, urlSize);
 			
 			AddSubview (url);
 
 			if (discloseButton){
 				var button = UIButton.FromType (UIButtonType.DetailDisclosure);
-				button.Frame = new RectangleF (290, 36, 20, 20);
+				button.Frame = new CGRect (290, 36, 20, 20);
 				AddSubview (button);
 				button.TouchDown += delegate { Tapped (); };
 			}
@@ -136,14 +136,14 @@ namespace TweetStation
 			var context = UIGraphics.GetCurrentContext ();
 			
 			context.SaveState ();
-			context.SetRGBFillColor (0, 0, 0, 1);
-			context.SetShadowWithColor (new SizeF (0, -1), 1, UIColor.White.CGColor);
+			context.SetFillColor (0, 0, 0, 1);
+			context.SetShadow (new CGSize (0, -1), 1, UIColor.White.CGColor);
 			
-			DrawString (user.Name, new RectangleF (TextX, 12, w, userSize), userFont, UILineBreakMode.TailTruncation);
-			DrawString (user.Location, new RectangleF (TextX, 50, w, locationSize), locationFont, UILineBreakMode.TailTruncation);
+			user.Name.DrawString (new CGRect (TextX, 12, w, userSize), userFont, UILineBreakMode.TailTruncation);
+			user.Location.DrawString (new CGRect (TextX, 50, w, locationSize), locationFont, UILineBreakMode.TailTruncation);
 			
 			UIColor.DarkGray.SetColor ();
-			DrawString (Locale.Format ("{0:#,#} followers", user.FollowersCount), new RectangleF (TextX, 34, w, followerSize), followerFont);
+			Locale.Format ("{0:#,#} followers", user.FollowersCount).DrawString (new CGRect (TextX, 34, w, followerSize), followerFont);
 
 			//url.Draw (rect);
 			
@@ -152,7 +152,7 @@ namespace TweetStation
 			
 			context.TranslateCTM (9, 9);
 			context.AddPath (borderPath);
-			context.SetRGBStrokeColor (0.5f, 0.5f, 0.5f, 1);
+			context.SetStrokeColor (0.5f, 0.5f, 0.5f, 1);
 			context.SetLineWidth (0.5f);
 			context.StrokePath ();
 		}

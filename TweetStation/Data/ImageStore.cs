@@ -1,4 +1,4 @@
-﻿// Copyright 2010 Miguel de Icaza
+// Copyright 2010 Miguel de Icaza
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -388,7 +388,7 @@ namespace TweetStation
 		static UIImage RoundedPic (string picfile, long id)
 		{
 			lock (cache){				
-				using (var pic = UIImage.FromFileUncached (picfile)){
+				using (var pic = UIImage.FromFile (picfile)){
 					if (pic == null)
 						return null;
 					

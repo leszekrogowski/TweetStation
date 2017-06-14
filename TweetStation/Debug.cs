@@ -18,7 +18,7 @@ namespace TweetStation
 		{
 			var b = UIButton.FromType (UIButtonType.RoundedRect);
 			b.SetTitle ("Debug", UIControlState.Normal);
-			b.Frame = new RectangleF (110, 22, 120, 40);
+			b.Frame = new CGRect (110, 22, 120, 40);
 			b.AddTarget (delegate { RunDebugUi2 (); }, UIControlEvent.TouchDown);
 			window.AddSubview (b);
 		}
@@ -33,19 +33,19 @@ namespace TweetStation
 		
 		void RunDebugUI ()
 		{
-			var rect = new RectangleF (10, 20, 280, 400);
+			var rect = new CGRect (10, 20, 280, 400);
 			var top = new UIView (rect){
 				BackgroundColor = UIColor.FromRGBA (0, 0, 0, 100)
 			};
 			var button = UIButton.FromType (UIButtonType.RoundedRect);
-            button.Frame = new RectangleF (10, 340, 80, 36);
+            button.Frame = new CGRect (10, 340, 80, 36);
 			button.SetTitle ("Done", UIControlState.Normal);
 			button.TouchDown += delegate {
 				top.RemoveFromSuperview ();
 				timer.Dispose ();
 			};
 			top.AddSubview (button);
-			rect = new RectangleF (5, 5, 270, 350);
+			rect = new CGRect (5, 5, 270, 350);
 			var dbg = new ImageLoaderDebug (rect);
 			top.AddSubview (dbg);
 			window.AddSubview (top);
@@ -58,10 +58,10 @@ namespace TweetStation
 		static UIFont f = UIFont.SystemFontOfSize (12);
 		UILabel cpending, crequest, plist, prequest;
 		
-		public ImageLoaderDebug (RectangleF r) : base (r)
+		public ImageLoaderDebug (CGRect r) : base (r)
 		{
 			BackgroundColor = UIColor.Clear;
-			r = new RectangleF (0, 0, r.Width, 18);
+			r = new CGRect (0, 0, r.Width, 18);
 			cpending = new UILabel (r) { Font = UIFont.BoldSystemFontOfSize (14), TextColor = UIColor.White, BackgroundColor = UIColor.Clear };
 			crequest = new UILabel (r) { Text = "Request", Font = UIFont.BoldSystemFontOfSize (14), TextColor = UIColor.White, BackgroundColor = UIColor.Clear };
 			plist = new UILabel (r) { Font = f, TextColor = UIColor.White, BackgroundColor = UIColor.Clear, Lines = 0, LineBreakMode = UILineBreakMode.WordWrap };

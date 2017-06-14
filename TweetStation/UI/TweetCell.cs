@@ -1,4 +1,4 @@
-﻿﻿//
+//
 // TweetCell.cs: 
 //
 // This shows both how to implement a custom UITableViewCell and
@@ -155,11 +155,11 @@ namespace TweetStation
 					UIColor.White.SetColor ();
 					context.FillRect (bounds);
 					context.DrawLinearGradient (bottomGradient, new CGPoint (midx, bounds.Height-17), new CGPoint (midx, bounds.Height), 0);
-					context.DrawLinearGradient (topGradient, new CGPoint (midx, 1), new PointF (midx, 3), 0);
+					context.DrawLinearGradient (topGradient, new CGPoint (midx, 1), new CGPoint (midx, 3), 0);
 					textColor = UIColor.Black;
 				}
 				
-				float xPic, xText;
+				nfloat xPic, xText;
 				
 				if ((CellStyle & 1) == 0 && tweet.UserId == TwitterAccount.CurrentAccount.AccountId){
 					xText = TextWidthPadding;
@@ -172,18 +172,18 @@ namespace TweetStation
 					userText = "Unknown";
 				}
 				textColor.SetColor ();
-				DrawString (userText, new RectangleF (xText, TextHeightPadding, bounds.Width-PicAreaWidth-TextWidthPadding-TimeWidth, userSize), userFont);
-				DrawString (tweet.Text, new RectangleF (xText, bounds.Y + TextYOffset, bounds.Width-PicAreaWidth-TextWidthPadding, bounds.Height-TextYOffset), textFont, UILineBreakMode.WordWrap);
+				userText.DrawString (new CGRect (xText, TextHeightPadding, bounds.Width-PicAreaWidth-TextWidthPadding-TimeWidth, userSize), userFont);
+				tweet.Text.DrawString (new CGRect (xText, bounds.Y + TextYOffset, bounds.Width-PicAreaWidth-TextWidthPadding, bounds.Height-TextYOffset), textFont, UILineBreakMode.WordWrap);
 				timeColor.SetColor ();
 				string time = Util.FormatTime (new TimeSpan (DateTime.UtcNow.Ticks - tweet.CreatedAt));
 				if (tweet.Favorited){
 					using (var nss = new NSString (time)){
 						var size = nss.StringSize (timeFont);
 						
-						star.Draw (new RectangleF (bounds.Width-24-size.Width-(xPic == PicXPad ? 0 : PicAreaWidth), TextHeightPadding, size.Height, size.Height));
+						star.Draw (new CGRect (bounds.Width-24-size.Width-(xPic == PicXPad ? 0 : PicAreaWidth), TextHeightPadding, size.Height, size.Height));
 					}
 				}
-				DrawString (time, new RectangleF (xText, TextHeightPadding, bounds.Width-PicAreaWidth-TextWidthPadding, timeSize),
+				time.DrawString (new CGRect (xText, TextHeightPadding, bounds.Width-PicAreaWidth-TextWidthPadding, timeSize),
 				            timeFont, UILineBreakMode.Clip, UITextAlignment.Right);
 				
 				if ((CellStyle & 2) == 0){
@@ -194,7 +194,7 @@ namespace TweetStation
 					context.SetLineWidth (1);
 					
 					// On device, the shadow is painted in the opposite direction!
-					context.SetShadowWithColor (new SizeF (1, 1), 3, UIColor.DarkGray.CGColor);
+					context.SetShadow (new CGSize (1, 1), 3, UIColor.DarkGray.CGColor);
 					context.AddPath (badgePath);
 					context.FillPath ();
 					if (retweetImage != null){
@@ -204,10 +204,10 @@ namespace TweetStation
 					}
 					context.RestoreState ();
 				}
-				tweetImage.Draw (new RectangleF (xPic, PicYPad, PicSize, PicSize));
+				tweetImage.Draw (new CGRect (xPic, PicYPad, PicSize, PicSize));
 				
 				if (retweetImage != null)
-					retweetImage.Draw (new RectangleF (xPic+30, PicYPad+30, 23, 23));
+					retweetImage.Draw (new CGRect (xPic+30, PicYPad+30, 23, 23));
 				
 				ticks += DateTime.UtcNow.Ticks - start;
 			}

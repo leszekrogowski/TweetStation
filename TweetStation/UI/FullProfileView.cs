@@ -62,7 +62,7 @@ namespace TweetStation
 			// If the user is null, add a spinner to show that the data is loading
 			if (user == null){
 				spinner = new UIActivityIndicatorView (UIActivityIndicatorViewStyle.White){
-					Frame = new RectangleF (20, 20, 30, 30)
+					Frame = new CGRect (20, 20, 30, 30)
 				};
 				spinner.StartAnimating ();
 				View.AddSubview (spinner);
@@ -87,7 +87,7 @@ namespace TweetStation
 				spinner = null;
 			}
 			
-			var profileRect = new RectangleF (PadX, 0, View.Bounds.Width-PadX, 100);
+			var profileRect = new CGRect (PadX, 0, View.Bounds.Width-PadX, 100);
 			var shortProfileView = new ShortProfileView (profileRect, user.Id, false);
 			shortProfileView.PictureTapped += delegate { PictureViewer.Load (this, user.Id); };
 			shortProfileView.UrlTapped += delegate { WebViewController.OpenUrl (this, user.Url); };

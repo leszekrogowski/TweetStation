@@ -100,8 +100,10 @@ namespace TweetStation
 						}
 						
 						account.SetDefaultAccount ();
-						DismissModalViewControllerAnimated (true);
-						container.Account = account;
+						DismissViewController (true, () =>
+						{
+							container.Account = account;
+						});
 					} else {
 						dlg = new UIAlertView (Locale.GetText ("Login error"), errorMessage, null, Locale.GetText ("Close"));
 						dlg.Show ();

@@ -74,10 +74,11 @@ namespace TweetStation
 					var copy = account;
 					var element = new AccountElement (account);
 					element.Tapped += delegate {
-						DismissModalViewControllerAnimated (true);
-						
-						TwitterAccount.SetDefault (copy);
-						AppDelegate.MainAppDelegate.Account = copy;
+						DismissViewController (true, () =>
+						{
+							TwitterAccount.SetDefault (copy);
+							AppDelegate.MainAppDelegate.Account = copy;
+						});
 					};
 					section.Add (element);
 				};
@@ -85,7 +86,7 @@ namespace TweetStation
 			var addAccount = new StringElement (Locale.GetText ("Add account"));
 			addAccount.Tapped += delegate {
 				AppDelegate.MainAppDelegate.AddAccount (this, delegate {
-					DismissModalViewControllerAnimated (false);
+					DismissViewController (false, () => { });
 				});
 			};
 			section.Add (addAccount);
@@ -112,7 +113,7 @@ namespace TweetStation
 		public override void ViewWillAppear (bool animated)
 		{
 			NavigationItem.RightBarButtonItem = new UIBarButtonItem (Locale.GetText ("Close"), UIBarButtonItemStyle.Plain, delegate {
-				DismissModalViewControllerAnimated (true);
+				DismissViewController (true, () => { });
 			});
 			if (Root [0].Count > 2)
 				SetupLeftItemEdit ();
@@ -145,7 +146,7 @@ namespace TweetStation
 		{
 			this.parent = parent;
 			var aboutUrl = NSUrl.FromFilename ("about.html");
-			int cellStyle = Util.Defaults.IntForKey ("cellStyle");
+			nint cellStyle = Util.Defaults.IntForKey ("cellStyle");
 			
 			Root = new RootElement (Locale.GetText ("Settings")){
 				MakeAccounts (),
