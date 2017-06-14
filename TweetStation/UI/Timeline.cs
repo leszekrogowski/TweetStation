@@ -317,9 +317,10 @@ namespace TweetStation {
 		protected override void ResetState ()
 		{
 			lock (Database.Main)
-				mainSection = new Section () {
-					UnlockedFetchTweets (200, 0, 0)
-				};
+			{
+				mainSection = new Section();
+				mainSection.AddAll(UnlockedFetchTweets(200, 0, 0));
+			}
 
 			Root = new RootElement (timelineTitle) {
 				UnevenRows = true
@@ -527,7 +528,7 @@ namespace TweetStation {
 							section.Remove (loadMore);
 						}
 						
-						int n = section.Add (tweetArray);
+						int n = section.AddAll (tweetArray);
 						
 						if (n == expectedCount){
 							loadMore = new LoadMoreElement (Locale.GetText ("Load more"), Locale.GetText ("Loading"), delegate {

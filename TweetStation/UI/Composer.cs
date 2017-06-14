@@ -431,28 +431,29 @@ namespace TweetStation
 			progressHud.RemoveFromSuperview ();
 			progressHud = null;
 		}
-			
-		UIAlertView alert;
+
 		void PicUploadComplete (string name)
 		{
 			DestroyProgressHud ();
 			
 			if (name == null){
-				alert = new UIAlertView (Locale.GetText ("Error"), 
-	                Locale.GetText ("There was an error uploading the media, do you want to post without it?"), null, 
-                    Locale.GetText ("Cancel Post"), Locale.GetText ("Post"));
-				
-				alert.Clicked += delegate(object sender, UIButtonEventArgs e) {
-					if (e.ButtonIndex == 1)
-						Post ();
-				};
-				alert.Show ();
+				var alert = UIAlertController.Create (Locale.GetText ("Error"), 
+	            	Locale.GetText ("There was an error uploading the media, do you want to post without it?"),
+					UIAlertControllerStyle.Alert);
+				alert.AddAction(UIAlertAction.Create(Locale.GetText("Cancel Post"), UIAlertActionStyle.Cancel, null));
+				alert.AddAction(UIAlertAction.Create(Locale.GetText("Post"), UIAlertActionStyle.Default, (alertAction) =>
+				{
+					Post();
+				}));
+				this.PresentViewController(alert, true, null);
 			} else {
 				var text = composerView.Text.Trim ();
 				if (text.Length + name.Length > 140){
-					alert = new UIAlertView ("Error",
-						Locale.GetText ("Message is too long"), null, null, "Ok");
-					alert.Show ();
+					var alert = UIAlertController.Create("Error",
+						Locale.GetText ("Message is too long"),
+						UIAlertControllerStyle.Alert);
+					alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Default, null));
+                    this.PresentViewController(alert, true, null);
 				} else {
 					text = text + " " + name;
 					if (text.Length > 140)

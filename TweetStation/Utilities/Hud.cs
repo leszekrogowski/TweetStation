@@ -3,7 +3,6 @@ using Foundation;
 using UIKit;
 using MonoTouch.Dialog;
 using CoreGraphics;
-using CoreGraphics;
 
 namespace TweetStation
 {

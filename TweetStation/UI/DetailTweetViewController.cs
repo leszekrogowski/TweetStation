@@ -30,7 +30,6 @@ using MonoTouch.Dialog;
 using Foundation;
 using UIKit;
 using System.IO;
-using CoreGraphics;
 using System.Drawing;
 
 namespace TweetStation
@@ -215,7 +214,6 @@ namespace TweetStation
 		
 		void Delete (object sender, EventArgs args)
 		{
-			UIView v = null;
 			var sheet = Util.GetSheet (Locale.GetText ("Delete"));
 			sheet.AddButton ("Delete");
 			sheet.AddButton ("Cancel");
@@ -228,8 +226,7 @@ namespace TweetStation
 			};
 			sheet.ShowInView (AppDelegate.MainAppDelegate.MainView);
 		}
-		
-		UIActionSheet sheet;
+
 		void Retweet (object sender, EventArgs args)
 		{
 			AppDelegate.MainAppDelegate.Retweet (this, tweet);

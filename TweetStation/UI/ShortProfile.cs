@@ -20,7 +20,6 @@
 using System;
 using CoreGraphics;
 using MonoTouch.Dialog;
-using CoreGraphics;
 using Foundation;
 using UIKit;
 

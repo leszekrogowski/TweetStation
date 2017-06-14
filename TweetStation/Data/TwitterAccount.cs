@@ -356,7 +356,7 @@ namespace TweetStation
 							rs.Close ();
 						} catch {}
 					}
-				} catch (Exception e){
+				} catch (Exception){
 					UploadCompletedCallback (null);
 				}
 				if (stop)

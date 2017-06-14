@@ -34,7 +34,7 @@ namespace TweetStation
 		[PrimaryKey, AutoIncrement]
 		public int LocalAccountId { get; set; }
 		
-		public static TwitterAccount FromId (nint id)
+		public static TwitterAccount FromId (int id)
 		{
 			if (accounts.ContainsKey (id)){
 				return accounts [id];
@@ -154,7 +154,7 @@ namespace TweetStation
 		
 		public static TwitterAccount GetDefaultAccount ()
 		{		
-			var account = FromId (Util.Defaults.IntForKey (DEFAULT_ACCOUNT));
+			var account = FromId ((int)Util.Defaults.IntForKey (DEFAULT_ACCOUNT));
 			if (account == null || string.IsNullOrEmpty (account.OAuthToken))
 				return null;
 			

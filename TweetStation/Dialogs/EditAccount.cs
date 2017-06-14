@@ -62,8 +62,6 @@ namespace TweetStation
 			}, null);
 		}
 		
-		UIAlertView dlg;
-		
 		public EditAccount (IAccountContainer container, TwitterAccount account, bool pushing)
 		{
 			var info = new AccountInfo ();
@@ -105,8 +103,9 @@ namespace TweetStation
 							container.Account = account;
 						});
 					} else {
-						dlg = new UIAlertView (Locale.GetText ("Login error"), errorMessage, null, Locale.GetText ("Close"));
-						dlg.Show ();
+						var dlg = UIAlertController.Create(Locale.GetText("Login error"), errorMessage, UIAlertControllerStyle.Alert);
+						dlg.AddAction(UIAlertAction.Create (Locale.GetText ("Close"), UIAlertActionStyle.Default, null));
+						this.PresentViewController(dlg, true, null);
 					}
 				});
 			});

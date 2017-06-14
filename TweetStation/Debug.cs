@@ -20,15 +20,15 @@ namespace TweetStation
 			b.SetTitle ("Debug", UIControlState.Normal);
 			b.Frame = new CGRect (110, 22, 120, 40);
 			b.AddTarget (delegate { RunDebugUi2 (); }, UIControlEvent.TouchDown);
-			window.AddSubview (b);
+			Window.AddSubview (b);
 		}
 		
 		void RunDebugUi2 ()
 		{
 			var b = new ProgressHud ("Uploading image ", "Stop");
 			b.Progress = .5f;
-			window.BringSubviewToFront (b);
-			window.AddSubview (b);
+			Window.BringSubviewToFront (b);
+			Window.AddSubview (b);
 		}
 		
 		void RunDebugUI ()
@@ -48,7 +48,7 @@ namespace TweetStation
 			rect = new CGRect (5, 5, 270, 350);
 			var dbg = new ImageLoaderDebug (rect);
 			top.AddSubview (dbg);
-			window.AddSubview (top);
+			Window.AddSubview (top);
 			
 			timer = new System.Threading.Timer (x => { BeginInvokeOnMainThread (dbg.Layout); }, null, 500, 500);
 		}

@@ -154,7 +154,7 @@ namespace TweetStation
 		public override void PopulateSearch (Section entries)
 		{
 			lock (Database.Main)
-				entries.Add (from x in Database.Main.Query<User> ("SELECT * from User ORDER BY Screenname")
+				entries.AddAll (from x in Database.Main.Query<User> ("SELECT * from User ORDER BY Screenname")
 				             select (Element) new UserElement (x));
 		}
 		
@@ -209,7 +209,7 @@ namespace TweetStation
 			              let value = Util.Defaults.StringForKey ("u-" + idx)
 			              where value != null select value).Distinct ().ToList ();
 			
-			entries.Add (from term in terms select (Element) new StringElement (term));
+			entries.AddAll (from term in terms select (Element) new StringElement (term));
 		}
 		
 		public override SearchMirrorElement MakeMirror ()

@@ -33,7 +33,6 @@ using UIKit;
 using MonoTouch.Dialog;
 using CoreGraphics;
 using CoreAnimation;
-using CoreGraphics;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Threading;

@@ -122,9 +122,6 @@
     <Reference Include="MonoTouch.Dialog-1" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainWindow.xib.designer.cs">
-      <DependentUpon>MainWindow.xib</DependentUpon>
-    </Compile>
     <Compile Include="Main.cs" />
     <Compile Include="SqliteNet\SQLite.cs" />
     <Compile Include="Data\TwitterAccount.cs" />
@@ -168,9 +165,6 @@
     <Compile Include="Utilities\Instapaper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <InterfaceDefinition Include="MainWindow.xib" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="SqliteNet\" />
     <Folder Include="Data\" />
     <Folder Include="Dialogs\" />
@@ -180,6 +174,7 @@
     <Folder Include="Audio\" />
     <Folder Include="en.lproj\" />
     <Folder Include="es.lproj\" />
+    <Folder Include="Assets.xcassets\LaunchImageStoryboard.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\friends.png" />
@@ -232,18 +227,25 @@
     <Content Include="es.lproj\Localizable.strings" />
     <Content Include="es.lproj\InfoPlist.strings" />
     <Content Include="en.lproj\Localizable.strings" />
-    <Content Include="Default%402x.png" />
-    <Content Include="Default.png" />
     <Content Include="Images\swipe-clip%402x.png" />
     <Content Include="Images\swipe-clip.png" />
     <Content Include="Images\swipe-clipdark%402x.png" />
     <Content Include="Images\swipe-clipdark.png" />
-    <Content Include="Icon.png" />
-    <Content Include="IconSpotlight.png" />
-    <Content Include="Icon%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\IconSpotlight.png" />
+    <ImageAsset Include="Assets.xcassets\LaunchImageStoryboard.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\LaunchImageStoryboard.imageset\Default.png" />
+    <ImageAsset Include="Assets.xcassets\LaunchImageStoryboard.imageset\Default%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="LaunchScreen.storyboard" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

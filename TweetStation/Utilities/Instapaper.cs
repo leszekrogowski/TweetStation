@@ -91,7 +91,6 @@ namespace TweetStation
 				InstapaperBookmark instapaper;
 				Action<bool> callback;
 				ProgressHud hud;
-				UIAlertView alert;
 	
 				public InstapaperSignInController (InstapaperBookmark instapaper, Action<bool> callback) 
 				{
@@ -166,12 +165,12 @@ namespace TweetStation
 							if (response.StatusCode == HttpStatusCode.Forbidden){
 								BeginInvokeOnMainThread (delegate {
 									DestroyHud ();
-									alert = new UIAlertView (Locale.GetText ("Login error"), Locale.GetText ("Invalid password"), null, Locale.GetText ("Close"));
-									alert.WillDismiss += delegate { 
-										userElement.BecomeFirstResponder (true); 
-										alert = null; 
-									};
-									alert.Show ();
+									var alert = UIAlertController.Create (Locale.GetText ("Login error"), Locale.GetText ("Invalid password"), UIAlertControllerStyle.Alert);
+									alert.AddAction(UIAlertAction.Create(Locale.GetText("Close"), UIAlertActionStyle.Default, null));
+									this.PresentViewController(alert, true, () =>
+									{
+										userElement.BecomeFirstResponder (true);
+									});
 								});
 								return false;
 							}

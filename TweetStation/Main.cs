@@ -15,15 +15,11 @@ namespace TweetStation
 	{
 		static void Main (string[] args)
 		{
-			try {
-				UIApplication.Main (args);
-			} catch (Exception e){
-				Console.WriteLine ("Toplevel exception: {0}", e);
-			}
+			UIApplication.Main(args, null, "AppDelegate");
 		}
 	}
 
-	// The name AppDelegate is referenced in the MainWindow.xib file.
+	[Register("AppDelegate")]
 	public partial class AppDelegate : UIApplicationDelegate, IAccountContainer
 	{
 		public static AppDelegate MainAppDelegate;
@@ -36,13 +32,20 @@ namespace TweetStation
 		public UIView MainView;
 		
 		UINavigationController [] navigationRoots;
-		
+
+		public override UIWindow Window
+		{
+			get;
+			set;
+		}
+
 		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 		{
 			Util.ReportTime ("Entering Finished");
 			
 			MainAppDelegate = this;
-			window.MakeKeyAndVisible ();
+
+			Window = new UIWindow(UIScreen.MainScreen.Bounds);
 
 			//SpyTouch.SpyTouch.Run ();
 			
@@ -82,16 +85,16 @@ namespace TweetStation
 				
 				Account = defaultAccount;
 			}
+
+			Window.MakeKeyAndVisible ();
 			return true;
 		}
 		
-		UITabBarController tabbarController;
-		
 		void CreatePhoneGui ()
 		{
-			tabbarController = new RotatingTabBar ();
+			var tabbarController = new RotatingTabBar ();
 			MainView = tabbarController.View;
-			window.AddSubview (MainView);
+			Window.RootViewController = tabbarController;
 
 			main = new TimelineViewController (Locale.GetText ("Friends"), TweetKind.Home, false);
 			mentions = new TimelineViewController (Locale.GetText ("Mentions"), TweetKind.Replies, false); 
@@ -254,8 +257,7 @@ namespace TweetStation
 			main.FavoriteChanged (tweet);
 			mentions.FavoriteChanged (tweet);
 		}
-		
-		UINavigationController loginRoot = null;
+
 		DialogViewController loginDialog = null;
 
 		void MakeLoginDialog (DialogViewController parent, RootElement root)
@@ -263,8 +265,7 @@ namespace TweetStation
 			loginDialog = new DialogViewController (UITableViewStyle.Grouped, root);
 			
 			if (parent == null){
-				loginRoot = new UINavigationController (loginDialog);
-				window.AddSubview (loginRoot.View);
+				Window.RootViewController = new UINavigationController (loginDialog);
 			} else {
 				loginDialog.NavigationItem.RightBarButtonItem = 
 					new UIBarButtonItem (Locale.GetText ("Close"),
@@ -276,11 +277,9 @@ namespace TweetStation
 		
 		void StartupAfterAuthorization (OAuthAuthorizer oauth)
 		{
-			loginRoot.View.RemoveFromSuperview ();
 			CreatePhoneGui ();
 			SetDefaultAccount (oauth);
 			loginDialog = null;
-			loginRoot = null;
 		}
 			
 		// Creates the login dialog using Xauth, this is a nicer
@@ -305,8 +304,7 @@ namespace TweetStation
 			};
 			MakeLoginDialog (parent, root);
 		}
-		
-		UIAlertView loginAlert;
+
 		void StartXauthLogin (string user, string password, Action callback)
 		{
 			LoadMoreElement status = loginDialog.Root [1][0] as LoadMoreElement;
@@ -330,13 +328,11 @@ namespace TweetStation
 				
 				BeginInvokeOnMainThread (delegate { 
 					status.Animating = false; 
-					loginAlert = new UIAlertView (Locale.GetText ("Error"), 
-					                             Locale.GetText ("Unable to login"), 
-					                             null, null, Locale.GetText ("Ok"));
-					loginAlert.Dismissed += delegate { loginAlert = null; };
-					loginAlert.Show ();
+					var loginAlert = UIAlertController.Create (Locale.GetText ("Error"), Locale.GetText ("Unable to login"), UIAlertControllerStyle.Alert);
+					loginAlert.AddAction(UIAlertAction.Create(Locale.GetText("Ok"), UIAlertActionStyle.Default, null));
+					this.Window.RootViewController.PresentViewController(loginAlert, true, null);
 				});
-			});			
+			});	
 		}
 		
 		//
