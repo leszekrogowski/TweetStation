@@ -1,4 +1,4 @@
-// Copyright 2010 Miguel de Icaza
+﻿﻿// Copyright 2010 Miguel de Icaza
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,8 +24,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using UIKit;
+using Foundation;
 using System.Text;
 using System.Collections.Specialized;
 using System.Json;
@@ -180,7 +180,7 @@ namespace TweetStation
 			lock (minuteLock){
 				var nowTicks = DateTime.UtcNow.Ticks;
 				if (nowTicks-lastLaunchTick > TimeSpan.TicksPerMinute*3)
-					MonoTouch.ObjCRuntime.Runtime.StartWWAN (uri);
+					ObjCRuntime.Runtime.StartWWAN (uri);
 				lastLaunchTick = nowTicks;
 			}
 			

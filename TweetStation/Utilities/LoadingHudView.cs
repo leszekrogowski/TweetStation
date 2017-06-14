@@ -1,4 +1,4 @@
-//
+﻿//
 //  LoadingHUDView.cs
 //
 //  Converted to MonoTouch on 1/18/09 - Eduardo Scoz || http://escoz.com
@@ -29,10 +29,9 @@
  
  */
 
-using MonoTouch.UIKit;
-using System.Drawing;
-using MonoTouch.CoreGraphics;
-using MonoTouch.Foundation;
+using UIKit;
+using CoreGraphics;
+using Foundation;
 using System;
 
 namespace TweetStation {
@@ -70,7 +69,7 @@ namespace TweetStation {
 			_activity = new UIActivityIndicatorView(UIActivityIndicatorViewStyle.White);
 			_hidden = true;
 			this.BackgroundColor = UIColor.Clear;
-			Frame = new RectangleF(0,0,320,480);
+			Frame = new CGRect(0,0,320,480);
 			this.AddSubview(_activity);
 		}
 	
@@ -96,17 +95,17 @@ namespace TweetStation {
 	
 	
 		protected void AdjustHeight() {
-			SizeF titleSize = calculateHeightOfTextForWidth(_title, titleFont, 200, UILineBreakMode.TailTruncation);
-			SizeF messageSize = calculateHeightOfTextForWidth(_message, messageFont, 200, UILineBreakMode.WordWrap);
+			CGSize titleSize = calculateHeightOfTextForWidth(_title, titleFont, 200, UILineBreakMode.TailTruncation);
+			CGSize messageSize = calculateHeightOfTextForWidth(_message, messageFont, 200, UILineBreakMode.WordWrap);
 	
 			var textHeight = titleSize.Height + messageSize.Height;
 			
-			RectangleF r = this.Frame;
-			r.Size = new SizeF(300, textHeight + 20);
+			CGRect r = this.Frame;
+			r.Size = new CGSize(300, textHeight + 20);
 			this.Frame = r;
 		}
 	
-		public override void Draw (RectangleF rect)
+		public override void Draw (CGRect rect)
 		{
 			if (_hidden) return;
 	
@@ -138,31 +137,31 @@ namespace TweetStation {
 			// Description
 			UIColor.White.SetColor();
 			textRect.Y += titleDrawSize.Height+10;
-			textRect = new RectangleF(textRect.Location, new SizeF(textRect.Size.Width, messageSize.Height));
+			textRect = new CGRect(textRect.Location, new SizeF(textRect.Size.Width, messageSize.Height));
 			
 			if (_message!=null)
 				this.DrawString(_message, textRect, messageFont, UILineBreakMode.WordWrap, UITextAlignment.Center);
 		}
 	
-		protected SizeF calculateHeightOfTextForWidth(string text, UIFont font, float width, UILineBreakMode lineBreakMode){
-			return text==null? new SizeF(0, 0) : this.StringSize(text, font, new SizeF(width, 300), lineBreakMode);
+		protected CGSize calculateHeightOfTextForWidth(string text, UIFont font, float width, UILineBreakMode lineBreakMode){
+			return text==null? new CGSize(0, 0) : this.StringSize(text, font, new SizeF(width, 300), lineBreakMode);
 		}
 	}
 	
 	public static class UIViewExtensions {
 		
-		public static void DrawRoundRectangle (this UIView view, RectangleF rrect, float radius, UIColor color) 
+		public static void DrawRoundRectangle (this UIView view, CGRect rrect, float radius, UIColor color) 
 		{
 			var context = UIGraphics.GetCurrentContext ();
 	
 			color.SetColor ();	
 			
-			float minx = rrect.Left;
-			float midx = rrect.Left + (rrect.Width)/2;
-			float maxx = rrect.Right;
-			float miny = rrect.Top;
-			float midy = rrect.Y+rrect.Size.Height/2;
-			float maxy = rrect.Bottom;
+			nfloat minx = rrect.Left;
+			nfloat midx = rrect.Left + (rrect.Width)/2;
+			nfloat maxx = rrect.Right;
+			nfloat miny = rrect.Top;
+			nfloat midy = rrect.Y+rrect.Size.Height/2;
+			nfloat maxy = rrect.Bottom;
 	
 			context.MoveTo (minx, midy);
 			context.AddArcToPoint (minx, miny, midx, miny, radius);

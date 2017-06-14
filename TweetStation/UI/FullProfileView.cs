@@ -1,4 +1,4 @@
-// Copyright 2010 Miguel de Icaza
+﻿// Copyright 2010 Miguel de Icaza
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,12 +18,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Drawing;
+using CoreGraphics;
 using System.IO;
 using System.Linq;
-using MonoTouch.Foundation;
+using Foundation;
 using MonoTouch.Dialog;
-using MonoTouch.UIKit;
+using UIKit;
 using System.Web;
 using System.Json;
 

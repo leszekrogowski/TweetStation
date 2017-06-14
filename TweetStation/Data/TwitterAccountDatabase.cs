@@ -1,4 +1,4 @@
-// Copyright 2010 Miguel de Icaza
+﻿// Copyright 2010 Miguel de Icaza
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using SQLite;
-using MonoTouch.Foundation;
+using Foundation;
 using System.IO;
 using System.Net;
 
@@ -34,7 +34,7 @@ namespace TweetStation
 		[PrimaryKey, AutoIncrement]
 		public int LocalAccountId { get; set; }
 		
-		public static TwitterAccount FromId (int id)
+		public static TwitterAccount FromId (nint id)
 		{
 			if (accounts.ContainsKey (id)){
 				return accounts [id];

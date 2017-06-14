@@ -1,4 +1,4 @@
-// Composer.cs:
+﻿﻿// Composer.cs:
 //    Views and ViewControllers for composing messages
 //
 // Copyright 2010 Miguel de Icaza
@@ -22,17 +22,17 @@
 // THE SOFTWARE.
 //
 using System;
-using System.Drawing;
+using CoreGraphics;
 using System.Linq;
 using System.Text;
 using System.Web;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using MonoTouch.CoreLocation;
+using Foundation;
+using UIKit;
+using CoreLocation;
 using SQLite;
 using System.IO;
 using System.Net;
-using MonoTouch.AVFoundation;
+using AVFoundation;
 using System.Text.RegularExpressions;
 using System.Threading;
 
@@ -45,13 +45,13 @@ namespace TweetStation
 		UIToolbar toolbar;
 		UILabel charsLeft;
 		internal UIBarButtonItem GpsButtonItem, ShrinkItem;
-		public event NSAction LookupUserRequested;
+		public event Action LookupUserRequested;
 		public bool justShrank;
 		
-		public ComposerView (RectangleF bounds, Composer composer, EventHandler cameraTapped) : base (bounds)
+		public ComposerView (CGRect bounds, Composer composer, EventHandler cameraTapped) : base (bounds)
 		{
 			this.composer = composer;
-			textView = new UITextView (RectangleF.Empty) {
+			textView = new UITextView (CGRect.Empty) {
 				Font = UIFont.SystemFontOfSize (18),
 			};
 			
@@ -176,11 +176,11 @@ namespace TweetStation
 			Resize (Bounds);
 		}
 		
-		void Resize (RectangleF bounds)
+		void Resize (CGRect bounds)
 		{
-			textView.Frame = new RectangleF (0, 0, bounds.Width, bounds.Height-44);
-			toolbar.Frame = new RectangleF (0, bounds.Height-44, bounds.Width, 44);
-			charsLeft.Frame = new RectangleF (64, bounds.Height-44, 50, 44);
+			textView.Frame = new CGRect (0, 0, bounds.Width, bounds.Height-44);
+			toolbar.Frame = new CGRect (0, bounds.Height-44, bounds.Width, 44);
+			charsLeft.Frame = new CGRect (64, bounds.Height-44, 50, 44);
 		}
 		
 		public string Text { 
@@ -295,10 +295,10 @@ namespace TweetStation
 			sheet.ShowInView (AppDelegate.MainAppDelegate.MainView);
 		}
 
-		UIImage Scale (UIImage image, SizeF size)
+		UIImage Scale (UIImage image, CGSize size)
 		{
 			UIGraphics.BeginImageContext (size);
-			image.Draw (new RectangleF (new PointF (0, 0), size));
+			image.Draw (new CGRect (new CGPoint (0, 0), size));
 			var ret = UIGraphics.GetImageFromCurrentImageContext ();
 			UIGraphics.EndImageContext ();
 			return ret;
@@ -382,7 +382,7 @@ namespace TweetStation
 			}
 			
 			sendItem.Enabled = true;
-			previousController.DismissModalViewControllerAnimated (true);
+			previousController.DismissModalViewController (true);
 			if (player != null)
 				player.Stop ();
 		}
@@ -489,12 +489,12 @@ namespace TweetStation
 			composerView.Frame = ComputeComposerSize (kbdBounds);
 		}
 
-		RectangleF ComputeComposerSize (RectangleF kbdBounds)
+		CGRect ComputeComposerSize (CGRect kbdBounds)
 		{
 			var view = View.Bounds;
 			var nav = navigationBar.Bounds;
 
-			return new RectangleF (0, nav.Height, view.Width, view.Height-kbdBounds.Height-nav.Height);
+			return new CGRect (0, nav.Height, view.Width, view.Height-kbdBounds.Height-nav.Height);
 		}
 		
 		public override void ViewWillAppear (bool animated)

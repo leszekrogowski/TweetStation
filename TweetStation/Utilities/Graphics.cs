@@ -1,4 +1,4 @@
-//
+﻿﻿//
 // Utilities for dealing with graphics
 //
 // Copyright 2010 Miguel de Icaza
@@ -21,11 +21,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Drawing;
-using MonoTouch.CoreGraphics;
-using MonoTouch.UIKit;
-using MonoTouch.ObjCRuntime;
-using MonoTouch.CoreAnimation;
+using System.Runtime.InteropServices;
+using CoreGraphics;
+using UIKit;
+using ObjCRuntime;
+using CoreAnimation;
 using MonoTouch.Dialog;
 
 namespace TweetStation
@@ -40,6 +40,9 @@ namespace TweetStation
 		public static bool HighRes = UIDevice.CurrentDevice.IsMultitaskingSupported && UIScreen.MainScreen.Scale > 1;
 		
 		static Selector sscale;
+
+		[DllImport(Constants.ObjectiveCLibrary, EntryPoint = "objc_msgSend")]
+		static extern void void_objc_msgSend_float(IntPtr deviceHandle, IntPtr setterHandle, float position);
 		
 		internal static void ConfigLayerHighRes (CALayer layer)
 		{
@@ -49,7 +52,7 @@ namespace TweetStation
 			if (sscale == null)
 				sscale = new Selector ("setContentsScale:");
 			
-			Messaging.void_objc_msgSend_float (layer.Handle, sscale.Handle, 2.0f);
+			void_objc_msgSend_float (layer.Handle, sscale.Handle, 2.0f);
 		}
 		
 		// Child proof the image by rounding the edges of the image
@@ -60,7 +63,7 @@ namespace TweetStation
 			
 			float size = HighRes ? 73 : 48;
 			
-			UIGraphics.BeginImageContext (new SizeF (size, size));
+			UIGraphics.BeginImageContext (new CGSize (size, size));
 			var c = UIGraphics.GetCurrentContext ();
 			
 			if (HighRes)
@@ -70,7 +73,7 @@ namespace TweetStation
 			
 			c.Clip ();
 			
-			image.Draw (new RectangleF (0, 0, size, size));
+			image.Draw (new CGRect (0, 0, size, size));
 			var converted = UIGraphics.GetImageFromCurrentImageContext ();
 			UIGraphics.EndImageContext ();
 			return converted;
@@ -85,7 +88,7 @@ namespace TweetStation
 			if (image == null)
 				throw new ArgumentNullException ("image");
 			
-			UIGraphics.BeginImageContext (new SizeF (73, 73));
+			UIGraphics.BeginImageContext (new CGSize (73, 73));
 			var c = UIGraphics.GetCurrentContext ();
 			
 			c.AddPath (largePath);
@@ -105,11 +108,11 @@ namespace TweetStation
 					height = width;
 				}
 				c.ScaleCTM (1, -1);
-				using (var copy = cg.WithImageInRect (new RectangleF (x, y, width, height))){
-					c.DrawImage (new RectangleF (0, 0, size, -size), copy);
+				using (var copy = cg.WithImageInRect (new CGRect (x, y, width, height))){
+					c.DrawImage (new CGRect (0, 0, size, -size), copy);
 				}
 			} else 
-				image.Draw (new RectangleF (0, 0, size, size));
+				image.Draw (new CGRect (0, 0, size, size));
 			
 			var converted = UIGraphics.GetImageFromCurrentImageContext ();
 			UIGraphics.EndImageContext ();
@@ -127,7 +130,7 @@ namespace TweetStation
 			this.stroke = stroke;
 		}
 		
-		public override void Draw (RectangleF rect)
+		public override void Draw (CGRect rect)
 		{
 			var context = UIGraphics.GetCurrentContext ();
 			var b = Bounds;

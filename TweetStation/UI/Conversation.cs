@@ -1,4 +1,4 @@
-//
+﻿//
 // Conversation.cs: UI elements for showing conversations
 //
 // Author: 
@@ -25,12 +25,12 @@
 // THE SOFTWARE.
 
 using System;
-using System.Drawing;
+using CoreGraphics;
 using System.IO;
 using System.Linq;
 using MonoTouch.Dialog;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 
 namespace TweetStation
 {

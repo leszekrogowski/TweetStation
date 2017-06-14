@@ -1,4 +1,4 @@
-//
+﻿//
 // The page that shows the various search options
 // Search, Nearby, User, saved searches and trending topics
 //
@@ -28,12 +28,12 @@ using System.IO;
 using System.Json;
 using System.Linq;
 using System.Net;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using MonoTouch.Dialog;
 using System.Web;
-using System.Drawing;
-using MonoTouch.CoreLocation;
+using CoreGraphics;
+using CoreLocation;
 
 namespace TweetStation
 {

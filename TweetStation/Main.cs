@@ -3,10 +3,10 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Json;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using MonoTouch.Dialog;
-using System.Drawing;
+using CoreGraphics;
 using System.Threading;
 
 namespace TweetStation
@@ -127,7 +127,7 @@ namespace TweetStation
 
 		void CheckDatabase ()
 		{
-			int last = Util.Defaults.IntForKey ("LastUpdate");
+			nint last = Util.Defaults.IntForKey ("LastUpdate");
 
 			int today = new TimeSpan (DateTime.UtcNow.Ticks).Days;
 			if (last == 0) 
@@ -269,7 +269,7 @@ namespace TweetStation
 				loginDialog.NavigationItem.RightBarButtonItem = 
 					new UIBarButtonItem (Locale.GetText ("Close"),
                                          UIBarButtonItemStyle.Plain, 
-					                     delegate { loginDialog.DismissModalViewControllerAnimated (true); });
+					                     delegate { loginDialog.DismissModalViewController (true); });
 				parent.ActivateController (loginDialog);
 			}
 		}
@@ -286,7 +286,7 @@ namespace TweetStation
 		// Creates the login dialog using Xauth, this is a nicer
 		// user experience, but requires Twitter to approve your 
 		// app
-		void NewAccountXAuth (DialogViewController parent, NSAction callback)
+		void NewAccountXAuth (DialogViewController parent, Action callback)
 		{
 			var login = new EntryElement (Locale.GetText ("Username"), Locale.GetText ("Your twitter username"), "");
 			var password = new EntryElement (Locale.GetText ("Password"), Locale.GetText ("Your password"), "", true);
@@ -307,7 +307,7 @@ namespace TweetStation
 		}
 		
 		UIAlertView loginAlert;
-		void StartXauthLogin (string user, string password, NSAction callback)
+		void StartXauthLogin (string user, string password, Action callback)
 		{
 			LoadMoreElement status = loginDialog.Root [1][0] as LoadMoreElement;
 			
@@ -391,7 +391,7 @@ namespace TweetStation
 			});
 		}
 
-		public void AddAccount (DialogViewController dvc, NSAction action)
+		public void AddAccount (DialogViewController dvc, Action action)
 		{
 			var oauth = new OAuthAuthorizer (TwitterAccount.OAuthConfig);
 
@@ -437,7 +437,7 @@ namespace TweetStation
 					UIView.SetAnimationCurve (UIViewAnimationCurve.EaseInOut);
 				}
 				
-				indicator.Frame = new RectangleF (x+((w-10)/2), View.Bounds.Height-TabBar.Bounds.Height-4, 10, 6);
+				indicator.Frame = new CGRect (x+((w-10)/2), View.Bounds.Height-TabBar.Bounds.Height-4, 10, 6);
 				
 				if (animate)
 					UIView.CommitAnimations ();

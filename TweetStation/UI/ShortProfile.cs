@@ -1,4 +1,4 @@
-// Copyright 2010 Miguel de Icaza
+﻿// Copyright 2010 Miguel de Icaza
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,11 +18,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Drawing;
+using CoreGraphics;
 using MonoTouch.Dialog;
-using MonoTouch.CoreGraphics;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using CoreGraphics;
+using Foundation;
+using UIKit;
 
 namespace TweetStation
 {
@@ -44,19 +44,19 @@ namespace TweetStation
 		UIButton url;
 		User user;
 		
-		public ShortProfileView (RectangleF rect, long userId, bool discloseButton) : this (rect, discloseButton)
+		public ShortProfileView (CGRect rect, long userId, bool discloseButton) : this (rect, discloseButton)
 		{
 			UpdateFromUserId (userId);
 		}
 		
-		public ShortProfileView (RectangleF rect, Tweet partialTweet, bool discloseButton) : this (rect, discloseButton)
+		public ShortProfileView (CGRect rect, Tweet partialTweet, bool discloseButton) : this (rect, discloseButton)
 		{
 			// Load the picture we have for the user.
 			if (partialTweet.IsSearchResult)
 				profilePic.Image = ImageStore.RequestProfilePicture (partialTweet.UserId, null, this);
 		}
 		
-		public ShortProfileView (RectangleF rect, bool discloseButton) : base (rect)
+		public ShortProfileView (CGRect rect, bool discloseButton) : base (rect)
 		{
 			BackgroundColor = UIColor.Clear;
 
@@ -105,9 +105,9 @@ namespace TweetStation
 			SetNeedsDisplay ();
 		}
 		
-		public event NSAction PictureTapped;
-		public event NSAction UrlTapped;
-		public event NSAction Tapped;
+		public event Action PictureTapped;
+		public event Action UrlTapped;
+		public event Action Tapped;
 		
 		public override void TouchesBegan (NSSet touches, UIEvent evt)
 		{
@@ -126,7 +126,7 @@ namespace TweetStation
 			base.TouchesBegan (touches, evt);
 		}
 
-		public override void Draw (RectangleF rect)
+		public override void Draw (CGRect rect)
 		{
 			// If we have a partialTweet, we do not have this information yet.
 			if (user == null)

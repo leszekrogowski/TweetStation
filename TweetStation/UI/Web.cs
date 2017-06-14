@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright 2010 Miguel de Icaza
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,10 +21,10 @@
 //
 //
 using System;
-using MonoTouch.UIKit;
+using UIKit;
 using MonoTouch.Dialog;
-using MonoTouch.Foundation;
-using System.Drawing;
+using Foundation;
+using CoreGraphics;
 
 namespace TweetStation
 {

@@ -1,4 +1,4 @@
-//
+﻿//
 // Search for a user
 //
 // Copyright 2010 Miguel de Icaza
@@ -25,10 +25,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Web;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using MonoTouch.Dialog;
-using System.Drawing;
+using CoreGraphics;
 using System.Linq;
 using System.Threading;
 
@@ -49,7 +49,7 @@ namespace TweetStation
 	}
 	
 	public class SearchFromGeo : StreamedTimelineViewController {
-		public SearchFromGeo (MonoTouch.CoreLocation.CLLocation location) :
+		public SearchFromGeo (CoreLocation.CLLocation location) :
 			base (Locale.GetText ("Nearby Tweets"), 
 			      String.Format (Util.AmericanCulture, "http://search.twitter.com/search.json?geocode={0},{1},5km", 
 					location.Coordinate.Latitude,

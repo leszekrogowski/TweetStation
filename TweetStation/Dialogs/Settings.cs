@@ -1,4 +1,4 @@
-// Copyright 2010 Miguel de Icaza
+﻿// Copyright 2010 Miguel de Icaza
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,8 +20,8 @@
 // using System;
 using System;
 using MonoTouch.Dialog;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 
 namespace TweetStation
 {
@@ -155,7 +155,7 @@ namespace TweetStation
 							(selfOnRight = new BooleanElement (Locale.GetText ("My tweets on right"), (cellStyle & 1) == 0)),
 							(shadows = new BooleanElement (Locale.GetText ("Avatar shadows"), (cellStyle & 2) == 0)),
 							(autoFav = new BooleanElement (Locale.GetText ("Favorite on Retweet"), Util.Defaults.IntForKey ("disableFavoriteRetweets") == 0)),
-							(compress = new RootElement (Locale.GetText ("Image Compression"), new RadioGroup ("group", Util.Defaults.IntForKey ("sizeCompression"))) {
+							(compress = new RootElement (Locale.GetText ("Image Compression"), new RadioGroup ("group", (int)Util.Defaults.IntForKey ("sizeCompression"))) {
 								new Section () {
 									new RadioElement (Locale.GetText ("Maximum")),
 									new RadioElement (Locale.GetText ("Medium")),
@@ -224,7 +224,7 @@ namespace TweetStation
 			Account = account;	
 		}
 		
-		public event NSAction Tapped;
+		public event Action Tapped;
 				
 		public override UITableViewCell GetCell (UITableView tv)
 		{

@@ -1,8 +1,8 @@
-using System;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+﻿using System;
+using Foundation;
+using UIKit;
 using MonoTouch.Dialog;
-using System.Drawing;
+using CoreGraphics;
 using System.Threading;
 using System.Net;
 using System.Text;
@@ -115,8 +115,10 @@ namespace TweetStation
 				
 				void Close (bool done)
 				{
-					DismissModalViewControllerAnimated (true);
-					callback (done);
+					DismissViewController (true, () =>
+					{
+                        callback (done);
+					});
 				}
 				
 				void DestroyHud ()

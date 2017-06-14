@@ -1,4 +1,4 @@
-// Copyright 2010 Miguel de Icaza
+﻿// Copyright 2010 Miguel de Icaza
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using UIKit;
+using Foundation;
 using MonoTouch.Dialog;
-using MonoTouch.CoreLocation;
+using CoreLocation;
 using System.Globalization;
-using System.Drawing;
+using CoreGraphics;
 
 namespace TweetStation
 {
@@ -100,7 +100,7 @@ namespace TweetStation
 				UINavigationController nav = null;
 				DialogViewController dvc = new DialogViewController (root);
 				dvc.NavigationItem.LeftBarButtonItem = new UIBarButtonItem (Locale.GetText ("Close"), UIBarButtonItemStyle.Plain, delegate {
-					nav.DismissModalViewControllerAnimated (false);
+					nav.DismissModalViewController (false);
 				});
 				
 				nav = new UINavigationController (dvc);

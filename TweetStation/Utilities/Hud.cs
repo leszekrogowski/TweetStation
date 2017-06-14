@@ -1,21 +1,21 @@
-using System;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+﻿using System;
+using Foundation;
+using UIKit;
 using MonoTouch.Dialog;
-using System.Drawing;
-using MonoTouch.CoreGraphics;
+using CoreGraphics;
+using CoreGraphics;
 
 namespace TweetStation
 {
 	public class Hud : UIView {
-		protected RectangleF HudRect;
+		protected CGRect HudRect;
 		
 		public Hud () : base (UIScreen.MainScreen.Bounds)
 		{
 			BackgroundColor = UIColor.Clear;
 		}
 		
-		public override void Draw (RectangleF rect)
+		public override void Draw (CGRect rect)
 		{
 			this.DrawRoundRectangle (HudRect, 8, UIColor.FromRGBA (0, 0, 0, 190));
 		}
@@ -23,14 +23,14 @@ namespace TweetStation
 	
 	public class ProgressHud : Hud {
 		const int minWidth = 240;
-		SizeF captionSize;
+		CGSize captionSize;
 		UIFont font;
 		string caption, buttonText;
 		UIButton button;
 		float progress;
-		RectangleF progressRect;
+		CGRect progressRect;
 		
-		public event NSAction ButtonPressed;
+		public event Action ButtonPressed;
 		public float Progress {
 			get {
 				return progress;
@@ -69,25 +69,25 @@ namespace TweetStation
 		{
 			base.LayoutSubviews ();
 
-			captionSize = StringSize (caption, font);
-			float width = captionSize.Width < minWidth ? minWidth : captionSize.Width;
+			captionSize = UIStringDrawing.StringSize (caption, font);
+			nfloat width = captionSize.Width < minWidth ? minWidth : captionSize.Width;
 			var bounds = Bounds;
 			
-			HudRect = new RectangleF ((bounds.Width-width)/2, bounds.Height > bounds.Width ? 60 : 30, width, 120);
+			HudRect = new CGRect ((bounds.Width-width)/2, bounds.Height > bounds.Width ? 60 : 30, width, 120);
 			
-			var ss = StringSize (buttonText, font);
+			var ss = UIStringDrawing.StringSize (buttonText, font);
 			var sh = Math.Max (ss.Height, 30);
 			var sw = Math.Max (ss.Width, 60);
-			button.Frame = new RectangleF (HudRect.Right-sw-20, HudRect.Bottom-sh-10, sw+5, sh);
+			button.Frame = new CGRect (HudRect.Right-sw-20, HudRect.Bottom-sh-10, sw+5, sh);
 			
-			progressRect = new RectangleF (HudRect.Left+10, HudRect.Y+45, HudRect.Width-20, 10);
+			progressRect = new CGRect (HudRect.Left+10, HudRect.Y+45, HudRect.Width-20, 10);
 		}
 		
-		public override void Draw (RectangleF rect)
+		public override void Draw (CGRect rect)
 		{
 			base.Draw (rect);
 			UIColor.White.SetColor ();
-			DrawString (caption, new PointF (HudRect.X + (HudRect.Width-captionSize.Width)/2, HudRect.Y + 10), font);
+			caption.DrawString (new CGPoint (HudRect.X + (HudRect.Width-captionSize.Width)/2, HudRect.Y + 10), font);
 
 			var ctx = UIGraphics.GetCurrentContext ();
 			using (var path = GraphicsUtil.MakeRoundedRectPath (progressRect, 5)){

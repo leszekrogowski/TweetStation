@@ -1,4 +1,4 @@
-// Copyright 2010 Miguel de Icaza
+﻿// Copyright 2010 Miguel de Icaza
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 #if true || SWIPE_SUPPORT
 
 using System;
-using MonoTouch.ObjCRuntime;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using ObjCRuntime;
+using Foundation;
+using UIKit;
 using MonoTouch.Dialog;
-using System.Drawing;
-using MonoTouch.CoreAnimation;
-using MonoTouch.CoreGraphics;
+using CoreGraphics;
+using CoreAnimation;
+using CoreGraphics;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Threading;
@@ -42,7 +42,7 @@ namespace TweetStation
 {
 	public partial class BaseTimelineViewController
 	{
-		public override UITableView MakeTableView (RectangleF bounds, UITableViewStyle style)
+		public override UITableView MakeTableView (CGRect bounds, UITableViewStyle style)
 		{
 			return new SwipeDetectingTableView (bounds, style, this);
 		}
@@ -50,9 +50,9 @@ namespace TweetStation
 		internal class SwipeDetectingTableView : UITableView {
 			BaseTimelineViewController container;
 			bool swipeDetectionDisabled;
-			PointF? touchStart;
+			CGPoint? touchStart;
 			
-			public SwipeDetectingTableView (RectangleF bounds, UITableViewStyle style, BaseTimelineViewController container)
+			public SwipeDetectingTableView (CGRect bounds, UITableViewStyle style, BaseTimelineViewController container)
 				: base (bounds, style)
 			{
 				this.container = container;
@@ -312,7 +312,7 @@ namespace TweetStation
 			CALayer [] layers;
 			UIImage [] images;
 			
-			CALayer MakeBackgroundLayer (RectangleF frame)
+			CALayer MakeBackgroundLayer (CGRect frame)
 			{
 				if (textureColor == null){
  					texture = UIImage.FromBundle ("Images/texture.png");
@@ -337,7 +337,7 @@ namespace TweetStation
 				return back;
 			}
 			
-			internal SwipeMenuView (BaseTimelineViewController parent, UIImage [] images, RectangleF frame) : base (frame)
+			internal SwipeMenuView (BaseTimelineViewController parent, UIImage [] images, CGRect frame) : base (frame)
 			{
 				this.parent = parent;
 				this.images = images;
@@ -407,10 +407,10 @@ namespace TweetStation
 			
 			// 
 			// Temporary prototype, published MonoTouch has a bug.
-			[DllImport (MonoTouch.Constants.UIKitLibrary, EntryPoint="UIGraphicsBeginImageContextWithOptions")]
-			public extern static void BeginImageContextWithOptions (SizeF size, bool opaque, float scale);
+			[DllImport (Constants.UIKitLibrary, EntryPoint="UIGraphicsBeginImageContextWithOptions")]
+			public extern static void BeginImageContextWithOptions (CGSize size, bool opaque, float scale);
 			
-			void BeginImageContext (SizeF size)
+			void BeginImageContext (CGSize size)
 			{
 				if (Graphics.HighRes)
 					BeginImageContextWithOptions (size, false, 0);

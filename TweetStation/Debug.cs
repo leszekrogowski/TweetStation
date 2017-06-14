@@ -1,10 +1,11 @@
-#if DEBUGIMAGE
+﻿#if DEBUGIMAGE
 
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using CoreGraphics;
+using UIKit;
+using Foundation;
 using System.Threading;
 
 namespace TweetStation
@@ -88,7 +89,7 @@ namespace TweetStation
 			var s = "";
 			foreach (var p in pending)
 				s += p + "\n";
-			var ss = StringSize (s, f, new SizeF (r.Width, 120), UILineBreakMode.WordWrap);
+			var ss = UIStringDrawing.StringSize (s, f, new CGSize (r.Width, 120), UILineBreakMode.WordWrap);
 			r.Height = ss.Height;
 			plist.Frame = r;
 			plist.Text = s;
@@ -101,7 +102,7 @@ namespace TweetStation
 			s = "";
 			foreach (var re in request)
 				s += re + " ";
-			ss = StringSize (s, f, new SizeF (r.Width, 120), UILineBreakMode.WordWrap);
+			ss = UIStringDrawing.StringSize (s, f, new CGSize (r.Width, 120), UILineBreakMode.WordWrap);
 			r.Height = ss.Height;
 			prequest.Frame = r;
 			prequest.Text = s;

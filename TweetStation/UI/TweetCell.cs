@@ -1,4 +1,4 @@
-//
+﻿﻿//
 // TweetCell.cs: 
 //
 // This shows both how to implement a custom UITableViewCell and
@@ -25,12 +25,12 @@
 // THE SOFTWARE.
 //
 using System;
-using System.Drawing;
+using CoreGraphics;
 using System.Collections;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
-using MonoTouch.CoreGraphics;
+using UIKit;
+using Foundation;
 using MonoTouch.Dialog;
+using System.Drawing;
 
 namespace TweetStation
 {
@@ -73,12 +73,12 @@ namespace TweetStation
 		static TweetCell ()
 		{
 			using (var rgb = CGColorSpace.CreateDeviceRGB()){
-				float [] colorsBottom = {
+				nfloat [] colorsBottom = {
 					1, 1, 1, .5f,
 					0.93f, 0.93f, 0.93f, .5f
 				};
 				bottomGradient = new CGGradient (rgb, colorsBottom, null);
-				float [] colorsTop = {
+				nfloat [] colorsTop = {
 					0.93f, 0.93f, 0.93f, .5f,
 					1, 1, 1, 0.5f
 				};
@@ -135,7 +135,7 @@ namespace TweetStation
 				SetNeedsDisplay ();
 			}
 			
-			public override void Draw (RectangleF rect)
+			public override void Draw (CGRect rect)
 			{
 				var start = DateTime.UtcNow.Ticks;
 				var context = UIGraphics.GetCurrentContext ();
@@ -154,8 +154,8 @@ namespace TweetStation
 				} else {
 					UIColor.White.SetColor ();
 					context.FillRect (bounds);
-					context.DrawLinearGradient (bottomGradient, new PointF (midx, bounds.Height-17), new PointF (midx, bounds.Height), 0);
-					context.DrawLinearGradient (topGradient, new PointF (midx, 1), new PointF (midx, 3), 0);
+					context.DrawLinearGradient (bottomGradient, new CGPoint (midx, bounds.Height-17), new CGPoint (midx, bounds.Height), 0);
+					context.DrawLinearGradient (topGradient, new CGPoint (midx, 1), new PointF (midx, 3), 0);
 					textColor = UIColor.Black;
 				}
 				
@@ -251,7 +251,7 @@ namespace TweetStation
 			SetNeedsDisplay ();
 		}
 
-		public static float GetCellHeight (RectangleF bounds, Tweet tweet)
+		public static float GetCellHeight (CGRect bounds, Tweet tweet)
 		{
 			bounds.Height = 999;
 			
@@ -261,7 +261,7 @@ namespace TweetStation
 			
 			using (var nss = new NSString (tweet.Text)){
 				var dim = nss.StringSize (textFont, bounds.Size, UILineBreakMode.WordWrap);
-				return Math.Max (dim.Height + TextYOffset + 2*TextWidthPadding, MinHeight);
+				return (float)Math.Max (dim.Height + TextYOffset + 2*TextWidthPadding, MinHeight);
 			}
 		}
 
@@ -312,7 +312,7 @@ namespace TweetStation
 		}
 		
 		#region IElementSizing implementation
-		public float GetHeight (UITableView tableView, NSIndexPath indexPath)
+		public nfloat GetHeight (UITableView tableView, NSIndexPath indexPath)
 		{
 			return TweetCell.GetCellHeight (tableView.Bounds, Tweet);
 		}

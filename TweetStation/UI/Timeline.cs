@@ -1,4 +1,4 @@
-//
+﻿//
 // Timeline.cs: classes for rendering timelines of tweets
 //
 // Copyright 2010 Miguel de Icaza
@@ -24,13 +24,13 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using MonoTouch.UIKit;
+using UIKit;
 using MonoTouch.Dialog;
-using System.Drawing;
+using CoreGraphics;
 using System.IO;
-using MonoTouch.Foundation;
+using Foundation;
 using System.Text;
-using MonoTouch.ObjCRuntime;
+using ObjCRuntime;
 
 namespace TweetStation {
 	

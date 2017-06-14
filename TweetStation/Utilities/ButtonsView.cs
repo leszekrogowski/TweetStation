@@ -1,4 +1,4 @@
-//
+﻿//
 // ButtonsView.cs: A view that constructs evently spaced buttons
 //
 // Copyright 2010 Miguel de Icaza
@@ -21,9 +21,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Drawing;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using CoreGraphics;
+using UIKit;
+using Foundation;
 using MonoTouch.Dialog;
 
 namespace TweetStation
@@ -33,7 +33,7 @@ namespace TweetStation
 		UIButton [] buttons;
 		const int buttonHeight = 44;
 		
-		public ButtonsView (int len, string [] captions, EventHandler [] actions) : base (new Rectangle (0, 0, 320, buttonHeight))
+		public ButtonsView (int len, string [] captions, EventHandler [] actions) : base (new CGRect (0, 0, 320, buttonHeight))
 		{
 			if (captions == null || actions == null)
 				throw new ArgumentNullException ();
@@ -61,7 +61,7 @@ namespace TweetStation
 			var cellWidth = (310-2*XPad) / buttons.Length;
 
 			for (int i = 0; i < buttons.Length; i++){
-				buttons [i].Frame = new RectangleF (XPad + i * cellWidth, 0, cellWidth-8, buttonHeight);
+				buttons [i].Frame = new CGRect (XPad + i * cellWidth, 0, cellWidth-8, buttonHeight);
 			}
 		}
 	}

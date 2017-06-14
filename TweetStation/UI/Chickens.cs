@@ -1,4 +1,4 @@
-//
+﻿//
 // Split on a separate partial class, so people can remove it easily
 //
 //
@@ -26,9 +26,9 @@
 //
 using System;
 using MonoTouch.Dialog;
-using MonoTouch.AVFoundation;
-using System.Drawing;
-using MonoTouch.Foundation;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
 
 namespace TweetStation
 {
@@ -46,7 +46,7 @@ namespace TweetStation
 				AudioPlay.InitAudio ();
 			}
 			
-			public CapturePullEvents (RectangleF rect) : base (rect)
+			public CapturePullEvents (CGRect rect) : base (rect)
 			{
 			}
 			
@@ -88,7 +88,7 @@ namespace TweetStation
 			}
 		}
 
-		public override RefreshTableHeaderView MakeRefreshTableHeaderView (RectangleF rect)
+		public override RefreshTableHeaderView MakeRefreshTableHeaderView (CGRect rect)
 		{
 			return new CapturePullEvents (rect);
 		}

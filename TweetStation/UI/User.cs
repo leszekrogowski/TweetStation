@@ -1,4 +1,4 @@
-//
+﻿//
 // User.cs: UserElement for now, eventually, the complete UI to render users
 //
 // Copyright 2010 Miguel de Icaza
@@ -24,8 +24,8 @@
 using System;
 using System.IO;
 using System.Linq;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using MonoTouch.Dialog;
 
 namespace TweetStation
@@ -79,7 +79,7 @@ namespace TweetStation
 			return cell;
 		}
 		
-		public override void Selected (DialogViewController dvc, UITableView tableView, MonoTouch.Foundation.NSIndexPath path)
+		public override void Selected (DialogViewController dvc, UITableView tableView, NSIndexPath path)
 		{
 			dvc.ActivateController (new FullProfileView (Caption));
 		}

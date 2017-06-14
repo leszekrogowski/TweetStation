@@ -1,4 +1,4 @@
-// Copyright 2010 Miguel de Icaza
+﻿// Copyright 2010 Miguel de Icaza
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,9 +24,9 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using MonoTouch.CoreGraphics;
+using Foundation;
+using UIKit;
+using CoreGraphics;
 
 namespace TweetStation
 {
@@ -129,7 +129,7 @@ namespace TweetStation
 				picfile = LargeRoundedPicDir + id + ".png";
 			
 			if (File.Exists (picfile)){
-				ret = UIImage.FromFileUncached (picfile);
+				ret = UIImage.FromFile (picfile);
 				if (ret != null){
 					lock (cache)
 						cache [id] = ret;

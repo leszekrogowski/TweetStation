@@ -1,4 +1,4 @@
-//
+﻿//
 // A wrapper to play music in a loop
 //
 // 
@@ -22,9 +22,9 @@
 using System;
 using System.IO;
 using System.Threading;
-using MonoTouch.AVFoundation;
-using MonoTouch.AudioToolbox;
-using MonoTouch.Foundation;
+using AVFoundation;
+using AudioToolbox;
+using Foundation;
 
 namespace TweetStation
 {

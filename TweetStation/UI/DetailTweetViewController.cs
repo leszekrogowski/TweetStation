@@ -1,4 +1,4 @@
-//
+﻿//
 // DetailTweetViewController.cs:
 //   Renders a full tweet, with the user profile information
 //   and useful operations for it
@@ -25,12 +25,13 @@
 //
 //
 using System;
-using System.Drawing;
+using CoreGraphics;
 using MonoTouch.Dialog;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using System.IO;
-using MonoTouch.CoreGraphics;
+using CoreGraphics;
+using System.Drawing;
 
 namespace TweetStation
 {
@@ -62,14 +63,14 @@ namespace TweetStation
 			}
 			
 			var handlers = new EventHandler [] { Reply, Retweet, Direct, Delete };
-			var profileRect = new RectangleF (PadX, 0, View.Bounds.Width-PadX, 100);
-			var detailRect = new RectangleF (PadX, 0, View.Bounds.Width-30-PadX*2, 0);
+			var profileRect = new CGRect (PadX, 0, View.Bounds.Width-PadX, 100);
+			var detailRect = new CGRect (PadX, 0, View.Bounds.Width-30-PadX*2, 0);
 			
 			shortProfileView = new ShortProfileView (profileRect, partialTweet, true);
 			profileRect.Height += 8;
 			
 			var triangle = new TriangleView (UIColor.White, UIColor.FromRGB (171, 171, 171)) {
-				Frame = new RectangleF (43, shortProfileView.Bounds.Height+1, 16, 8)
+				Frame = new CGRect (43, shortProfileView.Bounds.Height+1, 16, 8)
 			};
 			
 			var containerView = new UIView (profileRect);
@@ -248,7 +249,7 @@ namespace TweetStation
 		UIButton buttonView;
 		UIImage image;
 		
-		public DetailTweetView (RectangleF rect, Tweet tweet, TweetView.TappedEvent tapped, TweetView.TappedEvent tapAndHold, DialogViewController parent) : base (rect)
+		public DetailTweetView (CGRect rect, Tweet tweet, TweetView.TappedEvent tapped, TweetView.TappedEvent tapAndHold, DialogViewController parent) : base (rect)
 		{
 			var tweetRect = rect;
 			if (tweet.Kind != TweetKind.Direct)
@@ -260,7 +261,7 @@ namespace TweetStation
 			};
 
 			AddSubview (tweetView);
-			float y = tweetView.Frame.Height + PadY;
+			nfloat y = tweetView.Frame.Height + PadY;
 			
 			string thumbUrl, previewUrl;
 			var picUrl = PicDetect.FindPicUrl (tweet.Text, out thumbUrl, out previewUrl);
@@ -315,7 +316,7 @@ namespace TweetStation
 			ImageStore.QueueRequestForPicture (serial++, thumbUrl, this);
 		}
 
-		public override void Draw (RectangleF rect)
+		public override void Draw (CGRect rect)
 		{
 			if (borderAt < 1)
 				return;

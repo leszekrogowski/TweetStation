@@ -1,4 +1,4 @@
-// Copyright 2010 Miguel de Icaza
+﻿// Copyright 2010 Miguel de Icaza
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -19,10 +19,10 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using MonoTouch.CoreGraphics;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using CoreGraphics;
+using CoreGraphics;
+using Foundation;
+using UIKit;
 
 namespace TweetStation
 {
@@ -42,13 +42,13 @@ namespace TweetStation
 		UIFont bold = UIFont.BoldSystemFontOfSize (fontHeight);
 		
 		string text;
-		RectangleF lastRect;
+		CGRect lastRect;
 		List<Block> blocks;
 		Block highlighted = null;
 
 		const int fontHeight = 17;
 		
-		public TweetView (RectangleF frame, string text, TappedEvent tapped, TappedEvent tapAndHold) : base (frame)
+		public TweetView (CGRect frame, string text, TappedEvent tapped, TappedEvent tapAndHold) : base (frame)
 		{
 			blocks = new List<Block> ();
 			lastRect = RectangleF.Empty;
@@ -66,7 +66,7 @@ namespace TweetStation
 		
 		class Block {
 			public string Value;
-			public RectangleF Bounds;
+			public CGRect Bounds;
 			public UIFont Font;
 		}
 		
@@ -171,7 +171,7 @@ namespace TweetStation
 			return y + lineHeight;
 		}
 		
-		public override void Draw (RectangleF rect)
+		public override void Draw (CGRect rect)
 		{
 			if (rect != lastRect){
 				Layout ();
@@ -251,7 +251,7 @@ namespace TweetStation
 			holdTimer = null;
 		}
 		
-		void Track (PointF pos)
+		void Track (CGPoint pos)
 		{
 			foreach (var block in blocks){
 				if (!block.Bounds.Contains (pos))

@@ -1,4 +1,4 @@
-//
+﻿//
 // OAuth framework for TweetStation
 //
 // Author;
@@ -30,15 +30,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using CoreGraphics;
 using System.Linq;
 using System.Globalization;
 using System.Text;
 using System.Net;
 using System.Web;
 using System.Security.Cryptography;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using UIKit;
+using Foundation;
 using MonoTouch.Dialog;
 
 namespace TweetStation
@@ -297,11 +297,11 @@ namespace TweetStation
 		}
 		
 		class AuthorizationViewController : WebViewController {
-			NSAction callback;
+			Action callback;
 			OAuthAuthorizer container;
 			string url;
 			
-			public AuthorizationViewController (OAuthAuthorizer oauth, string url, NSAction callback)
+			public AuthorizationViewController (OAuthAuthorizer oauth, string url, Action callback)
 			{
 				this.url = url;
 				this.container = oauth;
@@ -331,16 +331,17 @@ namespace TweetStation
 					
 					container.AuthorizationToken = results ["oauth_token"];
 					container.AuthorizationVerifier = results ["oauth_verifier"];
-					DismissModalViewControllerAnimated (false);
-					
-					container.AcquireAccessToken ();
-					callback ();
+					DismissViewController (false, () =>
+					{
+						container.AcquireAccessToken();
+						callback();
+					});
 				}
 				return true;
 			}
 		}
 		
-		public void AuthorizeUser (DialogViewController parent, NSAction callback)
+		public void AuthorizeUser (DialogViewController parent, Action callback)
 		{
 			var authweb = new AuthorizationViewController (this, config.AuthorizeUrl + "?oauth_token=" + RequestToken, callback);
 			
