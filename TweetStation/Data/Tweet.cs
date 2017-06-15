@@ -84,13 +84,13 @@ namespace TweetStation
 		
 		static long ParseCreation (JsonObject json)
 		{
-			return DateTime.ParseExact (json ["created_at"], "ddd MMM dd HH:mm:ss zzz yyyy", CultureInfo.InvariantCulture).ToUniversalTime ().Ticks;			
+			return DateTimeOffset.ParseExact (json ["created_at"], "ddd MMM dd HH:mm:ss zzz yyyy", CultureInfo.InvariantCulture).ToUniversalTime ().Ticks;			
 		}
 		
 		// Yes, they even use different formats for the dates they return
 		static long ParseCreationSearch (JsonObject json)
 		{
-			return DateTime.ParseExact (json ["created_at"], "ddd, dd MMM yyyy HH:mm:ss zzz", CultureInfo.InvariantCulture).ToUniversalTime ().Ticks;
+			return DateTimeOffset.ParseExact (json ["created_at"], "ddd MMM dd HH:mm:ss zzz yyyy", CultureInfo.InvariantCulture).ToUniversalTime ().Ticks;
 		}
 		
 		static string ParseText (JsonObject json)
@@ -281,7 +281,7 @@ namespace TweetStation
 				yield break;
 			}
 				
-			foreach (JsonObject result in root ["results"]){
+			foreach (JsonObject result in root ["statuses"]){
 				Tweet tweet;
 				
 				try {
@@ -291,8 +291,8 @@ namespace TweetStation
 						Text = ParseText (result),
 						Source = Util.StripHtml (HttpUtility.HtmlDecode (result ["source"]) ?? ""),
 						UserId = serial++,
-						Screename = reference == null ? (string) result ["from_user"] : reference.Screenname,
-						PicUrl = reference == null ? (string) result ["profile_image_url"] : reference.PicUrl
+						Screename = reference == null ? (string) result ["user"]["screen_name"] : reference.Screenname,
+						PicUrl = reference == null ? (string) result ["user"]["profile_image_url_https"] : reference.PicUrl
 					};
 				} catch (Exception e){
 					Console.WriteLine (e);
@@ -325,7 +325,7 @@ namespace TweetStation
 		
 		public static void LoadFullTweet (long id, LoadCallback callback)
 		{
-			TwitterAccount.CurrentAccount.Download ("http://api.twitter.com/1/statuses/show.json?id="+id, result => {
+			TwitterAccount.CurrentAccount.Download ("https://api.twitter.com/1.1/statuses/show.json?id="+id, result => {
 				if (result == null)
 					callback (null);
 				

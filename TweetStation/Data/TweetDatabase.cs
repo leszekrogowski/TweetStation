@@ -259,7 +259,7 @@ namespace TweetStation
 			return FromId (tweet.UserId);
 		}
 		
-		const string lookup = "http://api.twitter.com/1/users/lookup.json";
+		const string lookup = "https://api.twitter.com/1.1/users/lookup.json";
 		public static void FetchUser (long id, Action<User> cback)
 		{
 			FetchUserFromUrl (lookup + "?user_id=" + id, cback);

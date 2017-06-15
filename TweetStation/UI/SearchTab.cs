@@ -146,7 +146,7 @@ namespace TweetStation
 			if (SearchResultsAreRecent)
 				return;
 			
-			account.Download ("http://api.twitter.com/1/saved_searches.json", result => {
+			account.Download ("https://api.twitter.com/1.1/saved_searches/list.json", result => {
 				if (result == null)
 					return;
 				LoadSearchResults (result);
@@ -184,7 +184,7 @@ namespace TweetStation
 		//
 		void FetchTrends ()
 		{
-			account.Download ("http://search.twitter.com/trends/current.json", result => {
+			account.Download ("https://api.twitter.com/1.1/trends/place.json?id=1", result => {
 				try {
 					if (result == null){
 						Root.Add (new Section (Locale.GetText ("Trends")){
@@ -194,13 +194,15 @@ namespace TweetStation
 					}
 					
 					var json = JsonValue.Load (result);
-					var jroot = (JsonObject) json ["trends"];
-					var jtrends = jroot.Values.FirstOrDefault (); 
 					
 					trends = new Section (Locale.GetText ("Trends"));
-					
-					for (int i = 0; i < jtrends.Count; i++)
-						trends.Add (new SearchElement (jtrends [i]["name"], jtrends [i]["query"]));
+
+					if (json.Count > 0)
+					{
+						var jtrends = (JsonArray)json[0]["trends"];
+						for (int i = 0; i < jtrends.Count; i++)
+							trends.Add(new SearchElement(jtrends[i]["name"], jtrends[i]["query"]));
+					}
 					Root.Add (trends);
 				} catch (Exception e){
 					Console.WriteLine (e);
@@ -214,18 +216,18 @@ namespace TweetStation
 		//
 		void FetchLists ()
 		{
-			account.Download ("http://api.twitter.com/1/" + account.Username + "/lists.json", res => {
+			account.Download ($"https://api.twitter.com/1.1/lists/list.json?user_id={account.AccountId}", res => {
 				if (res == null)
 					return;
 				
 				var json = JsonValue.Load (res);
-				var jlists = json ["lists"];
 				try {
 					int pos = 0;
-					foreach (JsonObject list in jlists){
+					foreach (JsonObject list in json){
 						string name = list ["full_name"];
 						string listname = list ["name"];
-						string url = "http://api.twitter.com/1/" + account.Username + "/lists/" + listname + "/statuses.json";
+						long listId = list["id"];
+						string url = $"https://api.twitter.com/1.1/lists/statuses.json?list_id={listId}&owner_id={account.AccountId}";
 						lists.Insert (pos++, UITableViewRowAnimation.Fade, TimelineRootElement.MakeList (name, listname, url));
 					}
 				} catch (Exception e){
@@ -261,7 +263,7 @@ namespace TweetStation
 			}), false);
 			                                     
 			editor.NavigationItem.SetRightBarButtonItem (new UIBarButtonItem (UIBarButtonSystemItem.Save, delegate {
-				string url = String.Format ("http://api.twitter.com/1/{0}/lists{1}.json?name={2}&mode={3}{4}", 
+				string url = String.Format ("https://api.twitter.com/1.1/{0}/lists{1}.json?name={2}&mode={3}{4}", 
 				                            TwitterAccount.CurrentAccount.Username,
 				                            originalName == null ? "" : "/" + originalName,
 				                            OAuth.PercentEncode (name.Value),

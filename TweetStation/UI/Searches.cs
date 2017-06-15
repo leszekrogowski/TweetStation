@@ -37,7 +37,7 @@ namespace TweetStation
 	public class SearchViewController : StreamedTimelineViewController {
 		
 		public SearchViewController (string search) :
-			base (search, "http://search.twitter.com/search.json?q=" + OAuth.PercentEncode (search), "rpp=", 50, "since_id=", "page=", null)
+			base (search, "https://api.twitter.com/1.1/search/tweets.json?q=" + OAuth.PercentEncode (search), "count=", 50, "since_id=", null, null)
 		{
 			//View.AddSubview (bottomBar);
 		}
@@ -51,10 +51,10 @@ namespace TweetStation
 	public class SearchFromGeo : StreamedTimelineViewController {
 		public SearchFromGeo (CoreLocation.CLLocation location) :
 			base (Locale.GetText ("Nearby Tweets"), 
-			      String.Format (Util.AmericanCulture, "http://search.twitter.com/search.json?geocode={0},{1},5km", 
+			      String.Format (Util.AmericanCulture, "https://api.twitter.com/1.1/search/tweets.json?geocode={0},{1},5km", 
 					location.Coordinate.Latitude,
 					location.Coordinate.Longitude),
-			      "rpp=", 50, "since_id=", "page=", null)
+			      "count=", 50, "since_id=", null, null)
 		{
 		}
 

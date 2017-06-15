@@ -100,7 +100,7 @@ namespace TweetStation
 			mentions = new TimelineViewController (Locale.GetText ("Mentions"), TweetKind.Replies, false); 
 			messages = new TimelineViewController (Locale.GetText ("Messages"), TweetKind.Direct, false);
 			searches = new SearchesViewController ();
-			favorites = StreamedTimelineViewController.MakeFavorites ("http://api.twitter.com/1/favorites.json");
+			favorites = StreamedTimelineViewController.MakeFavorites ("https://api.twitter.com/1.1/favorites/list.json");
 			
 			navigationRoots = new UINavigationController [5] {
 				new UINavigationController (main) {
@@ -232,7 +232,7 @@ namespace TweetStation
 					ToggleFavorite (tweet);
 				
 				if (e.ButtonIndex == 0)
-					TwitterAccount.CurrentAccount.Post ("http://api.twitter.com/1/statuses/retweet/" + tweet.Id + ".json", ""); 
+					TwitterAccount.CurrentAccount.Post ("https://api.twitter.com/1.1/statuses/retweet/" + tweet.Id + ".json", ""); 
 				else if (e.ButtonIndex == 1){
 					Composer.Main.Quote (controller, tweet);
 				}
@@ -244,7 +244,7 @@ namespace TweetStation
 		{
 			tweet.Favorited = !tweet.Favorited;
 			FavoriteChanged (tweet);
-			TwitterAccount.CurrentAccount.Post (String.Format ("http://api.twitter.com/1/favorites/{0}/{1}.json", tweet.Favorited ? "create" : "destroy", tweet.Id),"");
+			TwitterAccount.CurrentAccount.Post (String.Format ("https://api.twitter.com/1.1/favorites/{0}/{1}.json", tweet.Favorited ? "create" : "destroy", tweet.Id),"");
 			
 			lock (Database.Main)
 				tweet.Replace (Database.Main);

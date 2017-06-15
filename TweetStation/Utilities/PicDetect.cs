@@ -38,7 +38,7 @@ namespace TweetStation
 			Uri url = null;
 			
 			while (last < text.Length) {
-				int p = text.IndexOf ("http://", last);
+				int p = text.IndexOf ("https://", last);
 				if (p == -1)
 					break;
 				int urlEnd = text.IndexOf (' ', p);
@@ -55,8 +55,8 @@ namespace TweetStation
 				}
 				switch (url.Host.ToLower ()){
 				case "twitpic.com":
-					thumbUrl = "http://" + url.Host + "/show/thumb" + url.LocalPath;
-					previewUrl = "http://" + url.Host + "/show/large" + url.LocalPath;
+					thumbUrl = "https://" + url.Host + "/show/thumb" + url.LocalPath;
+					previewUrl = "https://" + url.Host + "/show/large" + url.LocalPath;
 					break;
 					
 				case "yfrog.com":
@@ -75,13 +75,13 @@ namespace TweetStation
 					
 				case "pic.gd":
 				case "tweetphoto.com":
-					thumbUrl = "http://tweetphotoapi.com/api/TPAPI.svc/imagefromurl?size=thumbnail&url=" + url.ToString ();
-					previewUrl = "http://tweetphotoapi.com/api/TPAPI.svc/imagefromurl?size=medium&url=" + url.ToString ();
+					thumbUrl = "https://tweetphotoapi.com/api/TPAPI.svc/imagefromurl?size=thumbnail&url=" + url.ToString ();
+					previewUrl = "https://tweetphotoapi.com/api/TPAPI.svc/imagefromurl?size=medium&url=" + url.ToString ();
 					break;
 					
 				case "img.ly":
-					thumbUrl = "http://" + url.Host + "/show/thumb" + url.LocalPath;
-					previewUrl = "http://" + url.Host + "/show/large" + url.LocalPath;
+					thumbUrl = "https://" + url.Host + "/show/thumb" + url.LocalPath;
+					previewUrl = "https://" + url.Host + "/show/large" + url.LocalPath;
 					break;
 					
 				case "moby.to":

@@ -576,7 +576,7 @@ namespace TweetStation {
 		
 		public static StreamedTimelineViewController MakeFavorites (string url)
 		{
-			return new StreamedTimelineViewController (Locale.GetText ("Favorites"), url, null, 20, null, "page=", null);
+			return new StreamedTimelineViewController (Locale.GetText ("Favorites"), url, "count=", 20, "since_id=", null, null);
 		}
 		
 		public static StreamedTimelineViewController MakeUserTimeline (string url)
@@ -612,7 +612,7 @@ namespace TweetStation {
 		
 		public static TimelineRootElement MakeFavorites (string nestedCaption, string caption, string url, User reference)
 		{
-			return new TimelineRootElement (nestedCaption, caption, url, null, 20, null, "page=", reference);
+			return new TimelineRootElement (nestedCaption, caption, url, "count=", 20, "since_id=", null, reference);
 		}
 		
 		public static TimelineRootElement MakeList (string nestedCaption, string caption, string url)

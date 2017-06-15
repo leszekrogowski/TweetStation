@@ -124,7 +124,7 @@ namespace TweetStation
 			var words = textView.Text.Split (new char [] { ' '}, StringSplitOptions.RemoveEmptyEntries);
 			
 			foreach (var word in words)
-				if (word.StartsWith ("http://")){
+				if (word.StartsWith ("http://") || word.StartsWith ("https://")){
 					ShrinkUrls (words);
 					break;
 				}
@@ -142,7 +142,7 @@ namespace TweetStation
 			
 			var wc = new WebClient ();
 			for (int i = 0; i < words.Length; i++){
-				if (!words [i].StartsWith ("http://"))
+				if (!words [i].StartsWith ("http://") && !words [i].StartsWith ("https://"))
 				    continue;
 				    
 				try {
@@ -474,11 +474,11 @@ namespace TweetStation
 				AppendLocation (content);
 				if (InReplyTo != 0)
 					content.AppendFormat ("&in_reply_to_status_id={0}", InReplyTo);	
-				account.Post ("http://twitter.com/statuses/update.json", content.ToString ());
+				account.Post ("https://twitter.com/statuses/update.json", content.ToString ());
 			} else {
 				content.AppendFormat ("text={0}&user={1}", OAuth.PercentEncode (composerView.Text), OAuth.PercentEncode (directRecipient));
 				AppendLocation (content);
-				account.Post ("http://twitter.com/direct_messages/new.json", content.ToString ());
+				account.Post ("https://twitter.com/direct_messages/new.json", content.ToString ());
 			}
 			CloseComposer (this, EventArgs.Empty);
 		}

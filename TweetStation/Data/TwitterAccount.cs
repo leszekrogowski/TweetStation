@@ -1,4 +1,4 @@
-﻿﻿// Copyright 2010 Miguel de Icaza
+﻿// Copyright 2010 Miguel de Icaza
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -54,9 +54,9 @@ namespace TweetStation
 			AuthorizeUrl = "https://twitter.com/oauth/authorize"
 		};
 		
-		const string timelineUri = "http://api.twitter.com/1/statuses/home_timeline.json";
-		const string mentionsUri = "http://api.twitter.com/1/statuses/mentions.json";
-		const string directUri = "http://api.twitter.com/1/direct_messages.json";
+		const string timelineUri = "https://api.twitter.com/1.1/statuses/home_timeline.json";
+		const string mentionsUri = "https://api.twitter.com/1.1/statuses/mentions_timeline.json";
+		const string directUri = "https://api.twitter.com/1.1/direct_messages.json";
 			
 		const string DEFAULT_ACCOUNT = "defaultAccount";
 		
@@ -211,11 +211,18 @@ namespace TweetStation
 						var response = we.Response as HttpWebResponse;
 						if (response != null){
 							switch (response.StatusCode){
-							case HttpStatusCode.Unauthorized:
-								// This is the case of sharing two keys
-								break;
+								case HttpStatusCode.Unauthorized:
+									// This is the case of sharing two keys
+									break;
 							}
+
 							stream = null;
+
+							using (var exStream = response.GetResponseStream())
+							using (StreamReader reader = new StreamReader(exStream))
+							{
+								Console.WriteLine(reader.ReadToEnd() ?? "Empty body");
+							}
 						}
 						Console.WriteLine (we);
 					} catch (Exception e) {
@@ -335,7 +342,7 @@ namespace TweetStation
 			{
 				var boundary = "###" + Guid.NewGuid ().ToString () + "###";
 							
-				//var url = new Uri ("http://api.twitpic.com/2/upload.json");
+				//var url = new Uri ("https://api.twitpic.com/2/upload.json");
 				var url = new Uri ("http://yfrog.com/api/xauth_upload");
 				var req = (HttpWebRequest) WebRequest.Create (url);
 				req.Method = "POST";

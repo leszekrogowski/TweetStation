@@ -281,9 +281,9 @@ namespace TweetStation
 				{ "oauth_timestamp", MakeTimestamp () },
 				{ "oauth_token", oauthToken },
 				{ "oauth_version", "1.0" },
-				//{ "realm", "http://api.twitter.com" }
+				//{ "realm", "https://api.twitter.com" }
 			};
-			string signurl = "http://api.twitter.com/1/account/verify_credentials.xml";
+			string signurl = "https://api.twitter.com/1.1/account/verify_credentials.xml";
 			// The signature is not done against the *actual* url, it is done against the verify_credentials.json one 
 			string signature = MakeSignature ("GET", signurl, headers);
 			string compositeSigningKey = MakeSigningKey (config.ConsumerSecret, oauthTokenSecret);

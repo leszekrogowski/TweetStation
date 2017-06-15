@@ -27,7 +27,7 @@ namespace TweetStation
 {
 	public class EditAccount : UINavigationController {
 		class AccountInfo  {
-			[Section ("Account", "If you do not have a twitter account,\nvisit http://twitter.com")]
+			[Section ("Account", "If you do not have a twitter account,\nvisit https://twitter.com")]
 			
 			[Entry ("Twitter screename")]
 			public string Login;
@@ -39,7 +39,7 @@ namespace TweetStation
 		void CheckCredentials (AccountInfo info, Action<string> result)
 		{
 			Util.PushNetworkActive ();
-			var http = (HttpWebRequest) WebRequest.Create ("http://api.twitter.com/1/statuses/home_timeline.json");
+			var http = (HttpWebRequest) WebRequest.Create ("https://api.twitter.com/1.1/statuses/home_timeline.json");
 			http.Credentials = new NetworkCredential (info.Login, info.Password);
 			http.BeginGetResponse (delegate (IAsyncResult iar){
 				HttpWebResponse response = null;

@@ -90,7 +90,7 @@ namespace TweetStation
 					Flags = UIViewElement.CellFlags.DisableSelection | UIViewElement.CellFlags.Transparent
 				});
 			
-			userTimeline = TimelineRootElement.MakeTimeline (partialTweet.Screename, Locale.GetText ("User's timeline"), "http://api.twitter.com/1/statuses/user_timeline.json?skip_user=true&screen_name=" + partialTweet.Screename, User.FromTweet (partialTweet));
+			userTimeline = TimelineRootElement.MakeTimeline (partialTweet.Screename, Locale.GetText ("User's timeline"), "https://api.twitter.com/1.1/statuses/user_timeline.json?skip_user=true&screen_name=" + partialTweet.Screename, User.FromTweet (partialTweet));
 
 			tweet = partialTweet;
 			if (!partialTweet.IsSearchResult)
@@ -220,7 +220,7 @@ namespace TweetStation
 			sheet.CancelButtonIndex = 1;
 			sheet.Clicked += delegate(object s, UIButtonEventArgs e) {
 				if (e.ButtonIndex == 0){
-					TwitterAccount.CurrentAccount.Post ("http://api.twitter.com/1/statuses/destroy/" + tweet.Id + ".json", "DELETE", "");
+					TwitterAccount.CurrentAccount.Post ("https://api.twitter.com/1.1/statuses/destroy/" + tweet.Id + ".json", "DELETE", "");
 					DeactivateController (true);
 				}
 			};

@@ -101,10 +101,10 @@ namespace TweetStation
 				});
 			};
 			
-			var tweetsUrl = String.Format ("http://api.twitter.com/1/statuses/user_timeline.json?skip_user=true&id={0}", user.Id);
-			var favoritesUrl = String.Format ("http://api.twitter.com/1/favorites.json?id={0}", user.Id);
-			var followersUrl = String.Format ("http://api.twitter.com/1/statuses/followers.json?id={0}", user.Id);
-			var friendsUrl = String.Format ("http://api.twitter.com/1/statuses/friends.json?id={0}", user.Id);
+			var tweetsUrl = String.Format ("https://api.twitter.com/1.1/statuses/user_timeline.json?trim_user=true&user_id={0}", user.Id);
+			var favoritesUrl = String.Format ("https://api.twitter.com/1.1/favorites/list.json?user_id={0}", user.Id);
+			var followersUrl = String.Format ("https://api.twitter.com/1.1/statuses/user_timeline.json?user_id={0}", user.Id);
+			var friendsUrl = String.Format ("https://api.twitter.com/1.1/statuses/user_timeline.json?user_id={0}", user.Id);
 			
 #if false
 			followButton = new StyledStringElement (FollowText, ToggleFollow){
@@ -131,7 +131,7 @@ namespace TweetStation
 				Root.Add (new Section (null, Locale.Format ("Joined on {0}", created.Value.ToLongDateString ())));
 			}
 			
-			string url = String.Format ("http://api.twitter.com/1/friendships/show.json?target_id={0}&source_screen_name={1}",
+			string url = String.Format ("https://api.twitter.com/1.1/friendships/show.json?target_id={0}&source_screen_name={1}",
 			                            user.Id, 
 			                            OAuth.PercentEncode (TwitterAccount.CurrentAccount.Username));
 			TwitterAccount.CurrentAccount.Download (url, res => {
@@ -204,7 +204,7 @@ namespace TweetStation
 		
 		void ToggleFollow ()
 		{
-			var url = String.Format ("http://api.twitter.com/1/friendships/{0}/{1}.json", following ? "destroy": "create", user.Id);
+			var url = String.Format ("https://api.twitter.com/1.1/friendships/{0}/{1}.json", following ? "destroy": "create", user.Id);
 			following = !following;
 			TwitterAccount.CurrentAccount.Post (url, "");
 			followButton.Caption = GetFollowText (following); 
@@ -225,7 +225,7 @@ namespace TweetStation
 				if (e.ButtonIndex != 0)
 					return;
 				
-				var url = String.Format ("http://api.twitter.com/1/blocks/{0}.json?user_id={1}", blocking ? "destroy" : "create", user.Id);
+				var url = String.Format ("https://api.twitter.com/1.1/blocks/{0}.json?user_id={1}", blocking ? "destroy" : "create", user.Id);
 				blocking = !blocking;
 				TwitterAccount.CurrentAccount.Post (url, "");
 				blockUnblockButton.Caption = GetBlockText (blocking);;
